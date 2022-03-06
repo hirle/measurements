@@ -1,4 +1,9 @@
 {
   "version": 2,
-  "projects": {}
+  "projects": {
+    "api": "packages/api",
+    "interface": "packages/interface",
+    "ui": "packages/ui",
+    "ui-e2e": "packages/ui-e2e"
+  }
 }
