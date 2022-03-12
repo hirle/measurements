@@ -1,3 +1,1 @@
-export function interface(): string {
-  return 'interface';
-}
+export { default as ApiVersionInterface } from './ApiVersionInterface';
