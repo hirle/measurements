@@ -40,7 +40,7 @@ export default class Logger {
 
   static initializeWFileLogging(logsConfig: LogsConfig): Logger {
     return new Logger(createLogger({
-      level: logsConfig.level || 'info',
+      level: logsConfig.level || 'info',
       format: this.getBaseFormat(),
       transports: [
         Logger.makeConsoleTransport(),

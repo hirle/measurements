@@ -2,25 +2,36 @@ import express, { RequestHandler } from 'express';
 import { json as BodyParserJson }  from 'body-parser';
 import { Server as HttpServer } from 'http';
 import { Server as socketIOServer} from 'socket.io';
-import Config from './Config';
 
 
 export default class Web {
 
-    private config: Config;
+    private httpPort: number;
     private app: express.Application;
     private httpServer: HttpServer;
     private io: socketIOServer;
 
-    constructor(config: Config) {
+    constructor(httpPort: number) {
         this.app = express()
-        this.config = config;
+        this.httpPort = httpPort;
         this.httpServer = new HttpServer(this.app)
         this.io = new socketIOServer(this.httpServer);
     }
 
     startOn( ) {
-        this.app.use(BodyParserJson);  
+
+        this.app.use(BodyParserJson());  
+
+        this.app.all('*', (req, res, next) => {
+            console.log(req.method + ' ' + req.url)
+            next()
+          })
+      
+        // TODO serve static files
+
+        this.httpServer.listen(this.httpPort, () => {
+            console.log(`Listening on ${this.httpPort}`);
+        });
     }
 
     recordGetRoute(path: string, requestHandler: RequestHandler ): void {

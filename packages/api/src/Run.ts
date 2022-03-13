@@ -2,8 +2,10 @@ import Config from './Config';
 import DefaultConfig from './default.config.json';
 import fs from 'fs';
 import Logger from "./Logger";
-import GetVersion from './GetVersion';
 import Web from "./Web";
+import GetVersion from './GetVersion';
+import SupplierHandler from './SupplierHandler';
+import { ApiVersionInterface } from '@measures/interface';
 
 export function run(argv: string[]): number {
     
@@ -11,20 +13,22 @@ export function run(argv: string[]): number {
 
     const logger: Logger = Logger.create(config.logs);
     
-    const web = new Web(config);
+    const web = new Web(config['http-port']);
     
-    web.startOn();
-
+    web.startOn()
+    
     setupApiRoutes(web );
-    
+
     logger.info('Ready!');
 
     return 0;
 }
 
 function setupApiRoutes( web: Web ) {
-  const getVersion = GetVersion.create(process.env.npm_package_version);
-  web.recordGetRoute('/api/version', getVersion);
+
+  // TODO set to process.env.npm_package_version
+  const getVersion = new GetVersion('0.0.1');
+  web.recordGetRoute('/api/version', SupplierHandler.create<ApiVersionInterface>(getVersion));
 }
 
 function processArgv(argv: string[]): Config {
