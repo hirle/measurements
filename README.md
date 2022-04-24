@@ -2,14 +2,14 @@
 
 # Measures
 
-Measures records data from your sensors into your database. It gives control as, describe what your sensors are, how you would like to record them, and Measures will faithfully fill your database.
-Measures has a UI which intention is to let you make sure the recording goes well. It therefore has not all the features a data scientist would like to have.
+Measures records data from your sensors into your database. Describe what your sensors are, how you would like to record them, and Measures will faithfully fill your database.
+Measures has an UI wich intention is to let you monitor your recordings are running well. Therefore is has not all the features a data scientist would dream off.
 
 ## Run
 
 ### Deploy
 
-An ansible playbook is provided. It has a role `node16`,
+An ansible playbook is provided.
 
 ### Prepare a config file
 
@@ -85,7 +85,7 @@ Response:
 
 ### Get current status of a sensor
 
-`GET /api/sensor(sensor id)/status`
+`GET /api/sensor/(sensor id)/status`
 
 Response:
 ```javascript
