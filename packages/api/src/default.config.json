@@ -1,6 +1,40 @@
 {
     "http-port" : 3300,
-    "db" : {
-        "filename": ":memory:"
-    }
+    "database" : {
+        "type": "postgres",
+        "config": {
+            "user": "postgres",
+            "password": "very.secret",
+            "host": "my.host.org",
+            "port": 5432,
+            "database": "postgres"
+        }
+    },
+    "sensors" : [
+        { 
+          "id": "my-sensor-id",
+          "type" : "1wire",
+          "recording": {
+            "auto-start": true,
+            "period" : "PT30S"
+          },
+          "config" : {
+            "path": "/sys/bus/w1/devices/28-0414606b95ff/w1_slave"
+          } 
+        },
+        { 
+          "id": "my-other-sensor-id",
+          "type" : "tcw122",
+          "recording": {
+            "auto-start": true,
+            "period" : "PT1M"
+          },
+          "config" : {
+            "host": "192.168.0.22",
+            "user": "foo",
+            "password": "bar",
+            "path": "qux"
+          } 
+        }
+      ]
 }

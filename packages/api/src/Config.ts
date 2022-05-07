@@ -5,13 +5,26 @@ export interface LogsConfig {
   }
 
 export interface DatabaseConfig {
-    filename: string
+  type: string,
+  config: unknown
 } 
 
+export interface RecordingConfig {
+  "auto-start": boolean,
+  period: string
+} 
+
+export interface SensorConfig {
+  id: string,
+  type: string,
+  recording?: RecordingConfig,
+  config: unknown
+}
 
 export default interface Config {
     "http-port": number,
-    db: DatabaseConfig,
+    database: DatabaseConfig,
+    sensors: SensorConfig[],
     logs?: LogsConfig
   }
   
