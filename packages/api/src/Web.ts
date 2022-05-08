@@ -22,7 +22,7 @@ export default class Web {
 
         this.app.use(BodyParserJson());  
 
-        this.app.all('*', (req, res, next) => {
+        this.app.all('*', (req, _res, next) => {
             console.log(req.method + ' ' + req.url)
             next()
           })

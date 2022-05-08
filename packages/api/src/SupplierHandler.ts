@@ -10,7 +10,7 @@ export default class SupplierHandler<T> {
         this.supplier = supplier;
     }
 
-    private handleRequest(req: Request, res: Response, _: NextFunction) {
+    private handleRequest(_req: Request, res: Response, _next: NextFunction) {
         const returned = this.supplier.get();
         res.send(returned);
     }
