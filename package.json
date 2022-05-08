@@ -2,7 +2,9 @@
   "name": "measures",
   "version": "0.0.1",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "test": "nx run-many --target=test --all"
+  },
   "private": true,
   "dependencies": {
     "axios": "^0.26.1",
