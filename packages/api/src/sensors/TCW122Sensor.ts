@@ -69,6 +69,16 @@ export class TCW122Sensor implements SensorInterface {
           }));
   }
 
+  static create(mayBeConfig: unknown ): TCW122Sensor {
+    if( typeof mayBeConfig === 'object'
+    && mayBeConfig !== null
+    && 'url' in mayBeConfig
+    && typeof (mayBeConfig as {url:unknown}).url ==='string'){
+      return new TCW122Sensor(mayBeConfig as TCW122SensorConfigInterface)
+    }
+    throw new Error ('Unexpected TCW122 config');
+  }
+
   private static readValue( data: TCW122SensorPayload, key:string):string {
     return data?.Monitor[key][0];
   }

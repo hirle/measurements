@@ -28,19 +28,27 @@ Copy the file `config.template.json` to `ansible/installs/files/config.json` and
     }
   }
   "sensors" : [
-    "my-sensor-id": { 
+    { 
+      "id": "my-sensor-id",
       "type" : "1wire",
-      "period" : "PT30S",
+      "recording": {
+        "auto-start": true
+        "period" : "PT30S",
+      },
       "config" : {
         "path": "/sys/bus/w1/devices/28-0414606b95ff/w1_slave"
       } 
     },
-    "my-other-sensor-id": { 
+    { 
+      "id": "my-other-sensor-id",
       "type" : "tcw122",
-      "period" : "PT1M",
+      "recording": {
+        "auto-start": true
+        "period" : "PT1M",
+      },
       "config" : {
-        "host": "192.168.0.22"
-        "user": "foo"
+        "url": "192.168.0.22",
+        "username": "foo",
         "password": "bar"
       } 
     }

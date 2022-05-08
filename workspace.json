@@ -2,7 +2,7 @@
   "version": 2,
   "projects": {
     "api": "packages/api",
-    "interface": "packages/interface",
+    "apiinterface": "packages/apiinterface",
     "ui": "packages/ui",
     "ui-e2e": "packages/ui-e2e"
   }

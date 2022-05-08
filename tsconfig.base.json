@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@measures/interface": ["packages/interface/src/index.ts"]
+      "@measures/apiinterface": ["packages/apiinterface/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
