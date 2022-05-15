@@ -1,25 +1,11 @@
-import { ApiVersionInterface } from '@measures/apiinterface';
+import { ApiVersionInterface, narrowApiVersionInterface } from '@measures/apiinterface';
 import axios, { AxiosResponse } from 'axios';
 
 export default class Api {
   static GetVersion(): Promise<ApiVersionInterface> {
     return axios.get('/api/version')
       .then( response => Api.checkStatus(response) )
-      .then((data) => {
-        if (typeof data === 'object'
-        && data !== null
-        && 'version' in data
-        && typeof (data as {version: unknown}).version === 'string'
-        && 'major' in data
-        && typeof (data as {major: unknown}).major === 'number'
-        && 'minor' in data
-        && typeof (data as {minor: unknown}).minor === 'number'
-        && 'patch' in data) {
-            return Promise.resolve(data as ApiVersionInterface);
-        } else {
-            throw new Error('unexpected data')
-        } 
-      });
+      .then( data => Promise.resolve(narrowApiVersionInterface(data)));
   }
 
   private static checkStatus(response: AxiosResponse): Promise<unknown> {

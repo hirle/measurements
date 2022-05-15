@@ -1,1 +1,1 @@
-export { default as ApiVersionInterface } from './ApiVersionInterface';
+export { default as ApiVersionInterface, narrowApiVersionInterface } from './ApiVersionInterface';
