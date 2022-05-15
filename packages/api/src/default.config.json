@@ -14,10 +14,6 @@
         { 
           "id": "my-sensor-id",
           "type" : "1wire",
-          "recording": {
-            "auto-start": true,
-            "period" : "PT30S"
-          },
           "config" : {
             "path": "/sys/bus/w1/devices/28-0414606b95ff/w1_slave"
           } 
@@ -25,10 +21,6 @@
         { 
           "id": "my-other-sensor-id",
           "type" : "tcw122",
-          "recording": {
-            "auto-start": true,
-            "period" : "PT1M"
-          },
           "config" : {
             "host": "192.168.0.22",
             "user": "foo",
@@ -36,5 +28,24 @@
             "path": "qux"
           } 
         }
-      ]
+      ],
+    "measures": [
+      {
+        "id": "interior",
+        "sensor-id": "my-sensor-id",
+        "sensor-key": "Temperature2",
+        "recording": {
+          "mode": "manual"
+        }
+      },
+      {
+        "id": "exterior",
+        "sensor-id" : "my-other-sensor-id",
+        "recording": {
+          "mode": "periodic",
+          "auto-start": "true",
+          "period": "PT1M"
+        }
+      } 
+    ]
 }
