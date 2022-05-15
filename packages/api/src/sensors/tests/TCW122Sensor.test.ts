@@ -23,13 +23,13 @@ describe('TCW122Sensor', () => {
     const underTest = new TCW122Sensor(simpleTestConfig);
     return underTest.fetchValue()
       .then(data => {
-        expect(data.ID).toBe('00:04:A3:AA:11:8E');
-        expect(data.DigitalInput1).toBe(false);
-        expect(data.DigitalInput2).toBe(true);
-        expect(data.AnalogInput1).toBe(12.6);
-        expect(data.AnalogInput2).toBe(5.0);
-        expect(data.Temperature1).toBe(18.3);
-        expect(data.Temperature2).toBe(12.3);
+        expect(data.values.get('ID')).toBe('00:04:A3:AA:11:8E');
+        expect(data.values.get('DigitalInput1')).toBe(false);
+        expect(data.values.get('DigitalInput2')).toBe(true);
+        expect(data.values.get('AnalogInput1')).toBe(12.6);
+        expect(data.values.get('AnalogInput2')).toBe(5.0);
+        expect(data.values.get('Temperature1')).toBe(18.3);
+        expect(data.values.get('Temperature2')).toBe(12.3);
       });
   });
 
@@ -47,7 +47,7 @@ describe('TCW122Sensor', () => {
     const underTest = new TCW122Sensor(protectedTestConfig);
     return underTest.fetchValue()
       .then(data => {
-        expect(data.ID).toBe('00:04:A3:AA:11:8E');
+        expect(data.values.get('ID')).toBe('00:04:A3:AA:11:8E');
       });
   });
 
