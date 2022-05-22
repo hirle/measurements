@@ -1,7 +1,9 @@
 import {URL} from 'url';
 import {parseStringPromise} from 'xml2js';
-import { SensorInterface, SensorValues, SensorValueType } from './SensorInterface';
+import { Measurement, SensorInterface, SensorValues } from '../SensorInterface';
+import { ValueType } from "../ValueType";
 import axios from 'axios';
+import { Unit } from '../Unit';
 
 export interface TCW122SensorConfigInterface{
   url: string;
@@ -25,21 +27,24 @@ interface TCW122SensorPayload{
   }
 }
 
-type SensorValueDecoder =  (x:string) => SensorValueType;
+
+type TCW122SensorValueDecoder =  (x:string) => ValueType;
+
+type TCW122SensorValueDecoding = [TCW122SensorValueDecoder, Unit]
 
 export class TCW122Sensor implements SensorInterface {
 
-  private static readonly keyProcessingMap: Map<string, SensorValueDecoder> = new Map([
-    ['Device', TCW122Sensor.decodeString ],
-    ['ID', TCW122Sensor.decodeString ],
-    ['Hostname', TCW122Sensor.decodeString ],
-    ['FW', TCW122Sensor.decodeString ],
-    ['DigitalInput1', TCW122Sensor.decodeDigitalInput ],
-    ['DigitalInput2', TCW122Sensor.decodeDigitalInput ],
-    ['AnalogInput1', TCW122Sensor.decodeVoltage ],
-    ['AnalogInput2', TCW122Sensor.decodeVoltage ],
-    ['Temperature1', TCW122Sensor.decodeTemperature ],
-    ['Temperature2', TCW122Sensor.decodeTemperature ]
+  private static readonly keyProcessingMap: Map<string, TCW122SensorValueDecoding> = new Map([
+    ['Device', [ TCW122Sensor.decodeString, undefined] ],
+    ['ID', [TCW122Sensor.decodeString, undefined ] ],
+    ['Hostname', [TCW122Sensor.decodeString, undefined ] ],
+    ['FW', [TCW122Sensor.decodeString, undefined] ],
+    ['DigitalInput1', [TCW122Sensor.decodeDigitalInput, undefined] ],
+    ['DigitalInput2', [TCW122Sensor.decodeDigitalInput, undefined] ],
+    ['AnalogInput1', [TCW122Sensor.decodeVoltage, 'V'] ],
+    ['AnalogInput2', [TCW122Sensor.decodeVoltage, 'V'] ],
+    ['Temperature1', [TCW122Sensor.decodeTemperature, '°C'] ],
+    ['Temperature2', [TCW122Sensor.decodeTemperature,  '°C'] ]
   ]);
 
   private queryUrl: URL;
@@ -56,12 +61,17 @@ export class TCW122Sensor implements SensorInterface {
     return axios.get(this.queryUrl.toString())
       .then(rawXmlData => parseStringPromise(rawXmlData.data))
       .then( (mayBeValues: TCW122SensorPayload) => {
+            const timestamp = new Date();
             const returned: SensorValues = {
-              timestamp: new Date(),
-              values: new Map()
+              values: new Map(),            
             };
-            for( const [key, decoder] of TCW122Sensor.keyProcessingMap ) {
-              returned.values.set(key,decoder(TCW122Sensor.readValue(mayBeValues, key)));
+            for( const [key, decoding] of TCW122Sensor.keyProcessingMap ) {
+              const [decoder, unit] = decoding;
+              returned.values.set(key, {
+                  timestamp,
+                  value: decoder(TCW122Sensor.readValue(mayBeValues, key)),
+                  unit 
+                });
             }
             return returned;
           });
@@ -90,7 +100,7 @@ export class TCW122Sensor implements SensorInterface {
     return rawValue;
   }
 
-  private static decodeDigitalInput(rawValue: string): SensorValueType {
+  private static decodeDigitalInput(rawValue: string): ValueType {
     switch( rawValue ) {
       case 'OPEN': return true;
       case 'CLOSED': return false;
@@ -98,7 +108,7 @@ export class TCW122Sensor implements SensorInterface {
     }
   }
 
-  private static decodeVoltage( rawValue: string): SensorValueType
+  private static decodeVoltage( rawValue: string): ValueType
   {
     const readVoltsExpr = /(\d+)\.(\d)V/;
     const decodedValues = readVoltsExpr.exec(rawValue)
@@ -109,7 +119,7 @@ export class TCW122Sensor implements SensorInterface {
     }
   }
 
-  private static decodeTemperature(rawValue: string): SensorValueType {
+  private static decodeTemperature(rawValue: string): ValueType {
     const res = rawValue.match(/(-?)(\d+)\.(\d)°C/);
     if( res ) {
       const sign = Number( res[1] + '1' ) ;
