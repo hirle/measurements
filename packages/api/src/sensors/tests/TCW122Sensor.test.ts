@@ -47,7 +47,8 @@ describe('TCW122Sensor', () => {
     const underTest = new TCW122Sensor(protectedTestConfig);
     return underTest.fetchValue()
       .then(data => {
-        expect(data.values.get('ID')).toBe('00:04:A3:AA:11:8E');
+        const dataID = data.values.get('ID');
+        expect(dataID.value).toBe('00:04:A3:AA:11:8E');
       });
   });
 
