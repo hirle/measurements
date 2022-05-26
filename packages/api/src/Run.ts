@@ -5,7 +5,7 @@ import Logger from "./Logger";
 import Web from "./Web";
 import GetVersion from './GetVersion';
 import SupplierHandler from './SupplierHandler';
-import { ApiVersionInterface } from '@measures/apiinterface';
+import { ApiVersionInterface } from '@measures/restapiinterface';
 import { SensorInterface } from './SensorInterface';
 import { SensorFactory } from './sensors/SensorFactory';
 

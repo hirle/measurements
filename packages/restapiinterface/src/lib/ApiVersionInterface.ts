@@ -1,4 +1,4 @@
-export default interface ApiVersionInterface {
+export interface ApiVersionInterface {
   version: string,
   major: number,
   minor: number,
