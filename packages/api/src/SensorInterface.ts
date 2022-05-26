@@ -1,7 +1,6 @@
 import { ValueType } from "./ValueType";
 import { Unit } from "./Unit";
 import Supplier from "./Supplier";
-import {SensorInterface} from './SensorInterface';
 
 
 export interface SensorInterface {
@@ -22,8 +21,8 @@ export interface Measurement {
 
 export class MeasurementStream implements Supplier<Measurement> {
   sensor: SensorInterface;
-  key: String;
-  constructor(sensor: SensorInterface, key: String) {
+  key: string;
+  constructor(sensor: SensorInterface, key: string) {
     this.sensor = sensor;
     this.key = key;
   }
