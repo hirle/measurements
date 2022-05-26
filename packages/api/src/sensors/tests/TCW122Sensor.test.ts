@@ -1,6 +1,8 @@
 import { TCW122Sensor, TCW122SensorConfigInterface } from '../TCW122Sensor';
 import { getLocal as mockServerGetLocal } from 'mockttp';
 import * as path from 'path';
+import { ValueType } from '../../ValueType';
+import { Unit } from '../../Unit';
 
 describe('TCW122Sensor', () => {
 
@@ -23,13 +25,25 @@ describe('TCW122Sensor', () => {
     const underTest = new TCW122Sensor(simpleTestConfig);
     return underTest.fetchValue()
       .then(data => {
-        expect(data.values.get('ID')).toBe('00:04:A3:AA:11:8E');
-        expect(data.values.get('DigitalInput1')).toBe(false);
-        expect(data.values.get('DigitalInput2')).toBe(true);
-        expect(data.values.get('AnalogInput1')).toBe(12.6);
-        expect(data.values.get('AnalogInput2')).toBe(5.0);
-        expect(data.values.get('Temperature1')).toBe(18.3);
-        expect(data.values.get('Temperature2')).toBe(12.3);
+
+        const expectations: Map<string, [ValueType, Unit ]> = new Map([
+          [ 'ID', ['00:04:A3:AA:11:8E', undefined ]],
+          [ 'DigitalInput1', [false, undefined ]],
+          [ 'DigitalInput2', [true, undefined ]],
+          [ 'AnalogInput1', [12.6, 'V' ]],
+          [ 'AnalogInput2', [5.0, 'V' ]],
+          [ 'Temperature1', [18.3, '°C' ]],
+          [ 'Temperature2', [12.3, '°C' ]],
+        ]);
+        for( const [key, expected] of expectations ) {
+          const expectedValue: ValueType = expected[0];
+          const expectedType: ValueType = expected[1];
+          const value = data.values.get(key);
+
+          expect(Date.now() - value.timestamp.getTime()).toBeLessThanOrEqual(10000);
+          expect(value.value).toBe(expectedValue);
+          expect(value.unit).toBe(expectedType);
+        }
       });
   });
 
