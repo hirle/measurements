@@ -49,7 +49,7 @@ export class TCW122Sensor implements SensorInterface {
 
   private queryUrl: URL;
 
-  constructor( config: TCW122SensorConfigInterface ) {
+  private constructor( config: TCW122SensorConfigInterface ) {
     const baseUrl = new URL(config.url);
     this.queryUrl = new URL('/status.xml', baseUrl);
     if( config.username ) {
