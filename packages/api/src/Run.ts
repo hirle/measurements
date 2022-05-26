@@ -6,7 +6,7 @@ import Web from "./Web";
 import GetVersion from './GetVersion';
 import SupplierHandler from './SupplierHandler';
 import { ApiVersionInterface } from '@measures/apiinterface';
-import { SensorInterface } from './sensors/SensorInterface';
+import { SensorInterface } from './SensorInterface';
 import { SensorFactory } from './sensors/SensorFactory';
 
 export function run(argv: string[]): number {
