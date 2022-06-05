@@ -1,4 +1,4 @@
-import Config, { SensorConfig } from './Config';
+import Config, { SensorConfig, MeasurementSupplierConfig } from './Config';
 import DefaultConfig from './default.config.json';
 import fs from 'fs';
 import Logger from "./Logger";
@@ -6,8 +6,10 @@ import Web from "./Web";
 import GetVersion from './GetVersion';
 import SupplierHandler from './SupplierHandler';
 import { ApiVersionInterface } from '@measures/restapiinterface';
-import { SensorInterface } from './SensorInterface';
+import { Sensor } from './Sensor';
 import { SensorFactory } from './sensors/SensorFactory';
+import { MeasurementSupplier } from './Measurement';
+import MeasurementDatabase from './MeasurementDatabase';
 
 export function run(argv: string[]): number {
     
@@ -15,7 +17,11 @@ export function run(argv: string[]): number {
 
     const logger: Logger = Logger.create(config.logs);
 
-    const _sensors: SensorInterface[] = setUpSensors(config.sensors);
+    const database : MeasurementDatabase = new MeasurementDatabase(config.database);
+
+    const sensors: Sensor[] = setUpSensors(config.sensors);
+
+    const _measurementSuppliers = setupMeasurementSuppliers(config.measurements, sensors);
 
     // TO DO give sensors to schedulers
 
@@ -30,9 +36,24 @@ export function run(argv: string[]): number {
     return 0;
 }
 
-function setUpSensors(sensors: SensorConfig[]): SensorInterface[] {
+function setUpSensors(sensors: SensorConfig[]): Sensor[] {
   return sensors.map( sensorConfig => SensorFactory.create(sensorConfig));
 }
+
+function setupMeasurementSuppliers( measurementConfigs: MeasurementSupplierConfig[], sensors: Sensor[] ): MeasurementSupplier[] {
+  return measurementConfigs.map( measurementConfig => {
+    const sensor = sensors.find( currentSensor => currentSensor.id === measurementConfig['sensor-id']);
+    if( ! sensor ) {
+      throw new Error(`Measurement ${measurementConfig.id} wants unknown sensor-id ${measurementConfig['sensor-id']}`);
+    }
+    if( ! sensor.getValuesKeys().has(measurementConfig['sensor-key']) ) {
+      throw new Error(`Measurement ${measurementConfig.id} wants unknown sensor-key ${measurementConfig['sensor-key']}`);
+    }
+
+    return new MeasurementSupplier(measurementConfig.id, sensor, measurementConfig['sensor-key']);
+  });
+}
+
 
 function setupApiRoutes( web: Web ) {
 

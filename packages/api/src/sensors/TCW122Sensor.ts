@@ -1,6 +1,6 @@
 import {URL} from 'url';
 import {parseStringPromise} from 'xml2js';
-import { Measurement, SensorInterface, SensorValues } from '../SensorInterface';
+import { Sensor, SensorValues } from '../Sensor';
 import { ValueType } from "../ValueType";
 import axios from 'axios';
 import { Unit } from '../Unit';
@@ -32,7 +32,7 @@ type TCW122SensorValueDecoder =  (x:string) => ValueType;
 
 type TCW122SensorValueDecoding = [TCW122SensorValueDecoder, Unit]
 
-export class TCW122Sensor implements SensorInterface {
+export class TCW122Sensor extends Sensor {
 
   private static readonly keyProcessingMap: Map<string, TCW122SensorValueDecoding> = new Map([
     ['Device', [ TCW122Sensor.decodeString, undefined] ],
@@ -49,7 +49,9 @@ export class TCW122Sensor implements SensorInterface {
 
   private queryUrl: URL;
 
-  private constructor( config: TCW122SensorConfigInterface ) {
+  private constructor( id: string, config: TCW122SensorConfigInterface ) {
+    super(id);
+
     const baseUrl = new URL(config.url);
     this.queryUrl = new URL('/status.xml', baseUrl);
     if( config.username ) {
@@ -77,16 +79,16 @@ export class TCW122Sensor implements SensorInterface {
           });
   }
 
-  getValuesKeys(): Readonly<string[]> {
-    return Array.from(TCW122Sensor.keyProcessingMap.keys()); 
+  getValuesKeys(): Readonly<Set<string>> {
+    return new Set(TCW122Sensor.keyProcessingMap.keys()); 
   }
 
-  static create(mayBeConfig: unknown ): TCW122Sensor {
+  static create(id:string, mayBeConfig: unknown ): TCW122Sensor {
     if( typeof mayBeConfig === 'object'
     && mayBeConfig !== null
     && 'url' in mayBeConfig
     && typeof (mayBeConfig as {url:unknown}).url ==='string'){
-      return new TCW122Sensor(mayBeConfig as TCW122SensorConfigInterface)
+      return new TCW122Sensor(id, mayBeConfig as TCW122SensorConfigInterface)
     }
     throw new Error ('Unexpected TCW122 config');
   }

@@ -1,3 +1,4 @@
+
 export interface LogsConfig {
     dir: string
     retention: number
@@ -10,8 +11,11 @@ export interface DatabaseConfig {
 } 
 
 export interface RecordingConfig {
-  "auto-start": boolean,
-  period: string
+  id: string,
+  "measurement-id": string,
+  mode: string,
+  "auto-start"?: boolean,
+  period?: string
 } 
 
 export interface SensorConfig {
@@ -21,11 +25,18 @@ export interface SensorConfig {
   config: unknown
 }
 
+export interface MeasurementSupplierConfig {
+  id: string,
+  "sensor-id": string,
+  "sensor-key": string
+}
+
 export default interface Config {
-    "http-port": number,
-    database: DatabaseConfig,
-    sensors: SensorConfig[],
-    logs?: LogsConfig
-  }
-  
-  
+  "http-port": number,
+  database: DatabaseConfig,
+  sensors: SensorConfig[],
+  measurements: MeasurementSupplierConfig[],
+  recorders: RecordingConfig[],
+  logs?: LogsConfig
+}
+
