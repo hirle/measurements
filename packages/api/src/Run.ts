@@ -1,4 +1,4 @@
-import Config, { SensorConfig, MeasurementSupplierConfig } from './Config';
+import Config, { SensorConfig, MeasurementSupplierConfig, RecorderConfig } from './Config';
 import DefaultConfig from './default.config.json';
 import fs from 'fs';
 import Logger from "./Logger";
@@ -6,10 +6,12 @@ import Web from "./Web";
 import GetVersion from './GetVersion';
 import SupplierHandler from './SupplierHandler';
 import { ApiVersionInterface } from '@measures/restapiinterface';
-import { Sensor } from './Sensor';
+import {  SensorCollection } from './Sensor';
 import { SensorFactory } from './sensors/SensorFactory';
-import { MeasurementSupplier } from './Measurement';
+import { MeasurementSupplier, MeasurementSupplierCollection } from './Measurement';
 import MeasurementDatabase from './MeasurementDatabase';
+import RecorderFactory from './recorders/RecorderFactory';
+import { RecorderCollection } from './recorders/Recorder';
 
 export function run(argv: string[]): number {
     
@@ -19,11 +21,11 @@ export function run(argv: string[]): number {
 
     const database : MeasurementDatabase = new MeasurementDatabase(config.database);
 
-    const sensors: Sensor[] = setUpSensors(config.sensors);
+    const sensors: SensorCollection = setUpSensors(config.sensors);
 
-    const _measurementSuppliers = setupMeasurementSuppliers(config.measurements, sensors);
+    const measurementSuppliers = setupMeasurementSuppliers(config.measurements, sensors);
 
-    // TO DO give sensors to schedulers
+    const recorders = setupRecorders( config.recorders, measurementSuppliers, database );
 
     const web = new Web(config['http-port']);
     
@@ -36,24 +38,26 @@ export function run(argv: string[]): number {
     return 0;
 }
 
-function setUpSensors(sensors: SensorConfig[]): Sensor[] {
-  return sensors.map( sensorConfig => SensorFactory.create(sensorConfig));
+function setUpSensors(sensors: SensorConfig[]): SensorCollection {
+  return new SensorCollection( sensors.map( sensorConfig => SensorFactory.create(sensorConfig)) );
 }
 
-function setupMeasurementSuppliers( measurementConfigs: MeasurementSupplierConfig[], sensors: Sensor[] ): MeasurementSupplier[] {
-  return measurementConfigs.map( measurementConfig => {
-    const sensor = sensors.find( currentSensor => currentSensor.id === measurementConfig['sensor-id']);
-    if( ! sensor ) {
-      throw new Error(`Measurement ${measurementConfig.id} wants unknown sensor-id ${measurementConfig['sensor-id']}`);
-    }
+function setupMeasurementSuppliers( measurementConfigs: MeasurementSupplierConfig[], sensors: SensorCollection ): MeasurementSupplierCollection {
+  return new MeasurementSupplierCollection(measurementConfigs.map( measurementConfig => {
+    const sensor = sensors.findById( measurementConfig['sensor-id']);
     if( ! sensor.getValuesKeys().has(measurementConfig['sensor-key']) ) {
       throw new Error(`Measurement ${measurementConfig.id} wants unknown sensor-key ${measurementConfig['sensor-key']}`);
     }
-
     return new MeasurementSupplier(measurementConfig.id, sensor, measurementConfig['sensor-key']);
-  });
+  }));
 }
 
+function setupRecorders( recorderConfigs: RecorderConfig[], measurementSuppliers: MeasurementSupplierCollection, measurementDb: MeasurementDatabase ): RecorderCollection {
+  return new RecorderCollection( recorderConfigs.map( recorderConfig => {
+    const measurementSupplier = measurementSuppliers.findById(recorderConfig['measurement-id'])
+    return RecorderFactory.create(recorderConfig, measurementSupplier, measurementDb);
+  }));
+}
 
 function setupApiRoutes( web: Web ) {
 

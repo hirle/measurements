@@ -8,8 +8,11 @@ export default class ManualRecorder extends Recorder{
     super(id, measurementSupplier, database);
   }
 
-  public recordOneMeasurement(): Promise<void> {
+  public recordOneMeasurement(): Promise<Measurement> {
     return this.measurementSupplier.get()
-    .then( (measurement: Measurement) => this.database.record(measurement));
+    .then( (measurement: Measurement) => {
+      this.database.record(measurement);
+      return measurement;
+    });
   }
 }

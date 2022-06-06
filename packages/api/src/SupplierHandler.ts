@@ -1,6 +1,6 @@
 import { NextFunction } from 'express';
 import { Request, Response } from 'express-serve-static-core';
-import Supplier from './Supplier';
+import Supplier from './patterns/Supplier';
 
 export default class SupplierHandler<T> {
 

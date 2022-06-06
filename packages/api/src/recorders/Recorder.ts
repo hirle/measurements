@@ -1,5 +1,6 @@
 import MeasurementDatabase from '../MeasurementDatabase';
 import { MeasurementSupplier } from '../Measurement';
+import { ObjectWithIdCollection } from '../patterns/ObjectWithID';
 
 export default abstract class Recorder {
 
@@ -14,3 +15,5 @@ export default abstract class Recorder {
   }
 }
 
+export class RecorderCollection extends ObjectWithIdCollection<Recorder>{
+}

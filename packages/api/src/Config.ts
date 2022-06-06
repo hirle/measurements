@@ -10,18 +10,17 @@ export interface DatabaseConfig {
   config: unknown
 } 
 
-export interface RecordingConfig {
+export interface RecorderConfig {
   id: string,
   "measurement-id": string,
   mode: string,
-  "auto-start"?: boolean,
-  period?: string
+  config?: unknown
 } 
 
 export interface SensorConfig {
   id: string,
   type: string,
-  recording?: RecordingConfig,
+  recording?: RecorderConfig,
   config: unknown
 }
 
@@ -36,7 +35,7 @@ export default interface Config {
   database: DatabaseConfig,
   sensors: SensorConfig[],
   measurements: MeasurementSupplierConfig[],
-  recorders: RecordingConfig[],
+  recorders: RecorderConfig[],
   logs?: LogsConfig
 }
 

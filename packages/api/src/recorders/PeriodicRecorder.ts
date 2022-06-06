@@ -1,10 +1,10 @@
 import { MeasurementSupplier } from "../Measurement";
 import MeasurementDatabase from "../MeasurementDatabase";
-import Recorder from "./Recorder";
 import {Duration} from 'luxon';
 import { setInterval } from 'timers';
+import ManualRecorder from "./ManualRecorder";
 
-export default class PeriodicRecorder extends Recorder {
+export default class PeriodicRecorder extends ManualRecorder {
   
   private cycleId: NodeJS.Timer;
   private period: number;
@@ -30,11 +30,12 @@ export default class PeriodicRecorder extends Recorder {
     this.cycleId = null;
   } 
 
+  public isRecording(): boolean {
+    return !!this.cycleId;
+  }
+
   private cycle() {
-    this.measurementSupplier.get()
-      .then( measurement => {
-        this.database.record(measurement);
-      });
+    this.recordOneMeasurement();
   }
 
 }

@@ -1,6 +1,6 @@
 import { ApiVersionInterface } from '@measures/restapiinterface';
 import SemVer from 'semver';
-import Supplier from './Supplier';
+import Supplier from './patterns/Supplier';
 
 export default class GetVersion implements Supplier<ApiVersionInterface> {
 
