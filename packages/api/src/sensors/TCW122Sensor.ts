@@ -1,6 +1,6 @@
 import {URL} from 'url';
 import {parseStringPromise} from 'xml2js';
-import { Sensor, SensorValues } from '../Sensor';
+import { Sensor, SensorValues } from './Sensor';
 import { ValueType } from "../ValueType";
 import axios from 'axios';
 import { Unit } from '../Unit';
@@ -71,8 +71,7 @@ export class TCW122Sensor extends Sensor {
               const [decoder, unit] = decoding;
               returned.values.set(key, {
                   timestamp,
-                  value: decoder(TCW122Sensor.readValue(mayBeValues, key)),
-                  unit 
+                  value: decoder(TCW122Sensor.readValue(mayBeValues, key))
                 });
             }
             return returned;
@@ -81,6 +80,12 @@ export class TCW122Sensor extends Sensor {
 
   getValuesKeys(): Readonly<Set<string>> {
     return new Set(TCW122Sensor.keyProcessingMap.keys()); 
+  }
+
+  getKeyValueUnit(key:string): Readonly<Unit> {
+    const decoding = TCW122Sensor.keyProcessingMap.get(key);
+    const [ , unit] = decoding;
+    return unit; 
   }
 
   static create(id:string, mayBeConfig: unknown ): TCW122Sensor {
@@ -102,7 +107,7 @@ export class TCW122Sensor extends Sensor {
     return rawValue;
   }
 
-  private static decodeDigitalInput(rawValue: string): ValueType {
+  private static decodeDigitalInput(rawValue: string): boolean {
     switch( rawValue ) {
       case 'OPEN': return true;
       case 'CLOSED': return false;
@@ -110,7 +115,7 @@ export class TCW122Sensor extends Sensor {
     }
   }
 
-  private static decodeVoltage( rawValue: string): ValueType
+  private static decodeVoltage( rawValue: string): number
   {
     const readVoltsExpr = /(\d+)\.(\d)V/;
     const decodedValues = readVoltsExpr.exec(rawValue)
@@ -121,7 +126,7 @@ export class TCW122Sensor extends Sensor {
     }
   }
 
-  private static decodeTemperature(rawValue: string): ValueType {
+  private static decodeTemperature(rawValue: string): number {
     const res = rawValue.match(/(-?)(\d+)\.(\d)°C/);
     if( res ) {
       const sign = Number( res[1] + '1' ) ;

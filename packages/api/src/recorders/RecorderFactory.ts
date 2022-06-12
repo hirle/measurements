@@ -1,6 +1,6 @@
 import { RecorderConfig } from "../Config";
 import { MeasurementSupplier } from "../Measurement";
-import MeasurementDatabase from "../MeasurementDatabase";
+import MeasurementsDatabase from "../MeasurementsDatabase";
 import ManualRecorder from "./ManualRecorder";
 import PeriodicRecorderFactory from "./PeriodicRecorderFactory";
 import Recorder from "./Recorder";
@@ -9,7 +9,7 @@ export default class RecorderFactory  {
   public static create(
     recordingConfig: RecorderConfig,
     measurementSupplier: MeasurementSupplier,
-    measurementDb: MeasurementDatabase
+    measurementDb: MeasurementsDatabase
   ) : Recorder {
     switch( recordingConfig.mode ) {
       case 'manual': return new ManualRecorder(recordingConfig.id, measurementSupplier, measurementDb)

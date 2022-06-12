@@ -1,13 +1,11 @@
 import ObjectWithId, { ObjectWithIdCollection } from "./patterns/ObjectWithID";
-import { Sensor, SensorValues } from "./Sensor";
+import { Sensor, SensorValue, SensorValues } from "./sensors/Sensor";
 import Supplier from "./patterns/Supplier";
 import { Unit } from "./Unit";
 import { ValueType } from "./ValueType";
 
-export interface Measurement {
-  timestamp: Date,
-  value: ValueType,
-  unit?: Unit;
+export interface Measurement extends SensorValue {
+  supplier: MeasurementSupplier
 }
 
 export class MeasurementSupplier implements Supplier<Promise<Measurement>>, ObjectWithId {
@@ -25,8 +23,12 @@ export class MeasurementSupplier implements Supplier<Promise<Measurement>>, Obje
   public get(): Promise<Measurement> {
     return this.sensor.fetchValue()
       .then( ( sensorValues: SensorValues )  => {
-        return sensorValues.values.get(this.key);
-      });
+        const value: SensorValue = sensorValues.values.get(this.key);
+        return {
+            ...value,
+            supplier: this
+          };
+        });
   }
 }
 

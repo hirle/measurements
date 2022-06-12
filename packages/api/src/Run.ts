@@ -6,10 +6,10 @@ import Web from "./Web";
 import GetVersion from './GetVersion';
 import SupplierHandler from './SupplierHandler';
 import { ApiVersionInterface } from '@measures/restapiinterface';
-import {  SensorCollection } from './Sensor';
+import {  SensorCollection } from './sensors/Sensor';
 import { SensorFactory } from './sensors/SensorFactory';
 import { MeasurementSupplier, MeasurementSupplierCollection } from './Measurement';
-import MeasurementDatabase from './MeasurementDatabase';
+import MeasurementsDatabase from './MeasurementsDatabase';
 import RecorderFactory from './recorders/RecorderFactory';
 import { RecorderCollection } from './recorders/Recorder';
 
@@ -19,7 +19,7 @@ export function run(argv: string[]): number {
 
     const logger: Logger = Logger.create(config.logs);
 
-    const database : MeasurementDatabase = new MeasurementDatabase(config.database);
+    const database : MeasurementsDatabase = new MeasurementsDatabase(config.database);
 
     const sensors: SensorCollection = setUpSensors(config.sensors);
 
@@ -52,7 +52,7 @@ function setupMeasurementSuppliers( measurementConfigs: MeasurementSupplierConfi
   }));
 }
 
-function setupRecorders( recorderConfigs: RecorderConfig[], measurementSuppliers: MeasurementSupplierCollection, measurementDb: MeasurementDatabase ): RecorderCollection {
+function setupRecorders( recorderConfigs: RecorderConfig[], measurementSuppliers: MeasurementSupplierCollection, measurementDb: MeasurementsDatabase ): RecorderCollection {
   return new RecorderCollection( recorderConfigs.map( recorderConfig => {
     const measurementSupplier = measurementSuppliers.findById(recorderConfig['measurement-id'])
     return RecorderFactory.create(recorderConfig, measurementSupplier, measurementDb);

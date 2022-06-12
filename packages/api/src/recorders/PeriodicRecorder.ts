@@ -1,5 +1,5 @@
 import { MeasurementSupplier } from "../Measurement";
-import MeasurementDatabase from "../MeasurementDatabase";
+import MeasurementsDatabase from "../MeasurementsDatabase";
 import {Duration} from 'luxon';
 import { setInterval } from 'timers';
 import ManualRecorder from "./ManualRecorder";
@@ -12,7 +12,7 @@ export default class PeriodicRecorder extends ManualRecorder {
   public constructor(
       id:string,
       measurementSupplier: MeasurementSupplier,
-      database: MeasurementDatabase,
+      database: MeasurementsDatabase,
       period: string
     ) {
     super(id, measurementSupplier, database);

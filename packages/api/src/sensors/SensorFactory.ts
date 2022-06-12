@@ -1,4 +1,4 @@
-import { Sensor } from '../Sensor';
+import { Sensor } from './Sensor';
 import { SensorConfig } from '../Config';
 import { TCW122Sensor } from './TCW122Sensor';
 

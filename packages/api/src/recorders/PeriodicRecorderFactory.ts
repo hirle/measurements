@@ -1,12 +1,12 @@
 import { MeasurementSupplier } from '../Measurement';
-import MeasurementDatabase from '../MeasurementDatabase';
+import MeasurementsDatabase from '../MeasurementsDatabase';
 import PeriodicRecorder from './PeriodicRecorder';
 
 export default class PeriodicRecorderFactory {
   public static create(
     id: string,
     measurementSupplier: MeasurementSupplier,
-    measurementDb: MeasurementDatabase,
+    measurementDb: MeasurementsDatabase,
     config: unknown
   ): PeriodicRecorder {
     const period: string = PeriodicRecorderFactory.getPeriodFromConfig(config);

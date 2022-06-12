@@ -77,11 +77,11 @@ Response:
     "opt": "alpha"
 }
 
-### Get current value of a sensor
+### Get current measurement from a sensor
 
 Request:
 
-`GET /api/sensor/(sensor id)/current`
+`GET /api/measurement/(measurement id)/current`
 
 Response:
 ```javascript
@@ -91,9 +91,9 @@ Response:
 }
 ```
 
-### Get current status of a sensor
+### Get current status of a recorder
 
-`GET /api/sensor/(sensor id)/status`
+`GET /api/recorder/(recorder id)/status`
 
 Response:
 ```javascript

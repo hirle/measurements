@@ -1,10 +1,10 @@
 import { Measurement, MeasurementSupplier } from '../Measurement';
-import MeasurementDatabase from '../MeasurementDatabase';
+import MeasurementsDatabase from '../MeasurementsDatabase';
 import Recorder from './Recorder';
 
 export default class ManualRecorder extends Recorder{
 
-  public constructor( id:string, measurementSupplier: MeasurementSupplier, database: MeasurementDatabase ) {
+  public constructor( id:string, measurementSupplier: MeasurementSupplier, database: MeasurementsDatabase ) {
     super(id, measurementSupplier, database);
   }
 
