@@ -68,7 +68,7 @@ export class TCW122Sensor extends Sensor {
               values: new Map(),            
             };
             for( const [key, decoding] of TCW122Sensor.keyProcessingMap ) {
-              const [decoder, unit] = decoding;
+              const [decoder] = decoding;
               returned.values.set(key, {
                   timestamp,
                   value: decoder(TCW122Sensor.readValue(mayBeValues, key))

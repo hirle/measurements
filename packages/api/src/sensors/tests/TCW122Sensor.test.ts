@@ -22,7 +22,7 @@ describe('TCW122Sensor', () => {
     mockServer.forGet("/status.xml")
       .thenFromFile(200, path.resolve(baseTestsData, 'status.xml'), {'Content-Type': 'text/xml'});
 
-    const underTest = TCW122Sensor.create(simpleTestConfig);
+    const underTest = TCW122Sensor.create('foo', simpleTestConfig);
     return underTest.fetchValue()
       .then(data => {
 
@@ -37,12 +37,13 @@ describe('TCW122Sensor', () => {
         ]);
         for( const [key, expected] of expectations ) {
           const expectedValue: ValueType = expected[0];
-          const expectedType: ValueType = expected[1];
+          const expectedType: Unit = expected[1];
           const value = data.values.get(key);
 
           expect(Date.now() - value.timestamp.getTime()).toBeLessThanOrEqual(10000);
           expect(value.value).toBe(expectedValue);
-          expect(value.unit).toBe(expectedType);
+          
+          expect(underTest.getKeyValueUnit(key)).toBe(expectedType);
         }
       });
   });
@@ -58,7 +59,7 @@ describe('TCW122Sensor', () => {
       .withQuery({a: 'foo:bar'})
       .thenFromFile(200, path.resolve(baseTestsData, 'status.xml'), {'Content-Type': 'text/xml'});
     
-    const underTest = TCW122Sensor.create(protectedTestConfig);
+    const underTest = TCW122Sensor.create('foo', protectedTestConfig);
     return underTest.fetchValue()
       .then(data => {
         const dataID = data.values.get('ID');
@@ -74,7 +75,7 @@ describe('TCW122Sensor', () => {
 
     mockServer.forGet("/status.xml").thenReply(200, 'this is not XML', {'Content-Type': 'text/xml'});
 
-    const underTest = TCW122Sensor.create(simpleTestConfig);
+    const underTest = TCW122Sensor.create('bad.formatting', simpleTestConfig);
     return expect(underTest.fetchValue()).rejects.toThrow(Error);
   });
 
@@ -85,7 +86,7 @@ describe('TCW122Sensor', () => {
       url: 'http://foo.bar.org'
     }
 
-    const underTest = TCW122Sensor.create(simpleTestConfig);
+    const underTest = TCW122Sensor.create('comm.error', simpleTestConfig);
     return expect(underTest.fetchValue()).rejects.toThrow(Error);
   });
 
@@ -97,21 +98,21 @@ describe('TCW122Sensor', () => {
 
     mockServer.forGet("/status.xml").thenReply(501, 'rainy day', {'Content-Type': 'text/plain'});
 
-    const underTest = TCW122Sensor.create(simpleTestConfig);
+    const underTest = TCW122Sensor.create('foo', simpleTestConfig);
     return expect(underTest.fetchValue()).rejects.toThrow(Error);
   });
 
   it('should handle empty config', () => {
     const emptyConfig = {};
-    expect( () => TCW122Sensor.create(emptyConfig) ).toThrow();
+    expect( () => TCW122Sensor.create('empty.config', emptyConfig) ).toThrow();
   });
   it('should handle null config', () => {
     const emptyConfig = null;
-    expect( () => TCW122Sensor.create(emptyConfig) ).toThrow();
+    expect( () => TCW122Sensor.create('null.config', emptyConfig) ).toThrow();
   });
   it('should handle bad config', () => {
     const emptyConfig = {url: 42};
-    expect( () => TCW122Sensor.create(emptyConfig) ).toThrow();
+    expect( () => TCW122Sensor.create('bad.config', emptyConfig) ).toThrow();
   });
 
 });
