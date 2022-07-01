@@ -63,14 +63,14 @@ export class TCW122Sensor extends Sensor {
     return axios.get(this.queryUrl.toString())
       .then(rawXmlData => parseStringPromise(rawXmlData.data))
       .then( (mayBeValues: TCW122SensorPayload) => {
-            const timestamp = new Date();
+            const at = new Date();
             const returned: SensorValues = {
               values: new Map(),            
             };
             for( const [key, decoding] of TCW122Sensor.keyProcessingMap ) {
               const [decoder] = decoding;
               returned.values.set(key, {
-                  timestamp,
+                  at,
                   value: decoder(TCW122Sensor.readValue(mayBeValues, key))
                 });
             }

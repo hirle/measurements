@@ -6,8 +6,8 @@ export interface ApiVersionInterface {
   opt?: string
 }
 
-export function narrowApiVersionInterface( input: unknown ): ApiVersionInterface {
-  if (typeof input === 'object'
+export function isApiVersionInterface( input: unknown ): input is ApiVersionInterface {
+  return typeof input === 'object'
     && input !== null
     && 'version' in input
     && typeof (input as {version: unknown}).version === 'string'
@@ -16,8 +16,12 @@ export function narrowApiVersionInterface( input: unknown ): ApiVersionInterface
     && 'minor' in input
     && typeof (input as {minor: unknown}).minor === 'number'
     && 'patch' in input
-    && typeof (input as {patch: unknown}).patch === 'number') {
-    return input as ApiVersionInterface;
+    && typeof (input as {patch: unknown}).patch === 'number';
+}
+
+export function narrowApiVersionInterface( input: unknown ): ApiVersionInterface {
+  if( isApiVersionInterface( input ) ){
+    return input;
   } else {
     throw new Error('unexpected data')
   } 

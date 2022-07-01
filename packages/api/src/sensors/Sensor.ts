@@ -1,7 +1,6 @@
-import { Measurement } from "../Measurement";
 import ObjectWithId, { ObjectWithIdCollection } from "../patterns/ObjectWithID";
 import { Unit } from "../Unit";
-import { ValueType } from "../ValueType";
+import { isValueType, ValueType } from "../ValueType";
 
 
 export abstract class Sensor implements ObjectWithId{
@@ -22,10 +21,31 @@ export interface SensorValues {
 } 
 
 export interface SensorValue {
-  timestamp: Date,
+  at: Date,
   value: ValueType
 }
 
-
-export class SensorCollection extends ObjectWithIdCollection<Sensor> {
+export function narrowSensorValue ( maybeSensorValue: unknown ): SensorValue {
+  if (isAltmostSensorValue ( maybeSensorValue )
+  &&  isValueType(maybeSensorValue.value)
+  &&  mayBecomeADate( maybeSensorValue.at ) ) {
+    return { at: new Date((maybeSensorValue).at), value: maybeSensorValue.value};
+  } else {
+    throw new Error('unexpected data')
+  } 
 }
+
+type AltmostSensorValue = { at: unknown, value: unknown };
+function isAltmostSensorValue ( maybeSensorValue: unknown ): maybeSensorValue is AltmostSensorValue {
+  return typeof maybeSensorValue === 'object'
+  && maybeSensorValue !== null
+  && 'at' in maybeSensorValue
+  && 'value' in maybeSensorValue;
+}
+
+function mayBecomeADate( input: unknown ) : input is string|number|Date {
+  return input && ( ['string', 'number'].includes(typeof input) || input instanceof Date );
+}
+
+
+export type SensorCollection = ObjectWithIdCollection<Sensor>;

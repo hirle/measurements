@@ -40,7 +40,7 @@ describe('TCW122Sensor', () => {
           const expectedType: Unit = expected[1];
           const value = data.values.get(key);
 
-          expect(Date.now() - value.timestamp.getTime()).toBeLessThanOrEqual(10000);
+          expect(Date.now() - value.at.getTime()).toBeLessThanOrEqual(10000);
           expect(value.value).toBe(expectedValue);
           
           expect(underTest.getKeyValueUnit(key)).toBe(expectedType);

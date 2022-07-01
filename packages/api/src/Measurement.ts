@@ -1,16 +1,26 @@
 import ObjectWithId, { ObjectWithIdCollection } from "./patterns/ObjectWithID";
 import { Sensor, SensorValue, SensorValues } from "./sensors/Sensor";
 import Supplier from "./patterns/Supplier";
-import { Unit } from "./Unit";
-import { ValueType } from "./ValueType";
 
-export interface Measurement extends SensorValue {
-  supplier: MeasurementSupplier
+export class Measurement {
+
+  public constructor( 
+    private supplier: MeasurementSupplier,
+    private sensorValue: SensorValue
+  ){}
+
+  public getSensorValue(): SensorValue {
+    return this.sensorValue;
+  } 
+
+  public getSupplier(): MeasurementSupplier {
+    return this.supplier;
+  } 
 }
 
 export class MeasurementSupplier implements Supplier<Promise<Measurement>>, ObjectWithId {
   
-  public readonly id;
+  public readonly id: string;
   public readonly sensor: Sensor;
   public readonly key: string;
 
@@ -24,13 +34,9 @@ export class MeasurementSupplier implements Supplier<Promise<Measurement>>, Obje
     return this.sensor.fetchValue()
       .then( ( sensorValues: SensorValues )  => {
         const value: SensorValue = sensorValues.values.get(this.key);
-        return {
-            ...value,
-            supplier: this
-          };
+        return new Measurement(this, value);
         });
   }
 }
 
-export class MeasurementSupplierCollection extends ObjectWithIdCollection<MeasurementSupplier> {
-}
+export type MeasurementSupplierCollection = ObjectWithIdCollection<MeasurementSupplier>;
