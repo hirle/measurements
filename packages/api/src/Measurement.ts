@@ -1,4 +1,4 @@
-import ObjectWithId, { ObjectWithIdCollection } from "./patterns/ObjectWithID";
+import ObjectWithId, { ObjectWithIdCollection } from "./patterns/ObjectWithIdCollection";
 import { Sensor, SensorValue, SensorValues } from "./sensors/Sensor";
 import Supplier from "./patterns/Supplier";
 
@@ -39,4 +39,4 @@ export class MeasurementSupplier implements Supplier<Promise<Measurement>>, Obje
   }
 }
 
-export type MeasurementSupplierCollection = ObjectWithIdCollection<MeasurementSupplier>;
+export class MeasurementSupplierCollection extends ObjectWithIdCollection<MeasurementSupplier>{}

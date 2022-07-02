@@ -1,4 +1,4 @@
-import ObjectWithId, { ObjectWithIdCollection } from "../patterns/ObjectWithID";
+import ObjectWithId, { ObjectWithIdCollection } from "../patterns/ObjectWithIdCollection";
 import { Unit } from "../Unit";
 import { isValueType, ValueType } from "../ValueType";
 
@@ -48,4 +48,4 @@ function mayBecomeADate( input: unknown ) : input is string|number|Date {
 }
 
 
-export type SensorCollection = ObjectWithIdCollection<Sensor>;
+export class SensorCollection extends ObjectWithIdCollection<Sensor>{}
