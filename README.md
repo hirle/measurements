@@ -1,5 +1,7 @@
 **This project is under construction**
 
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=hirle_measures)
+
 # Measures
 
 Measures records data from your sensors into your database. Describe what your sensors are, how you would like to record them, and Measures will faithfully fill your database.
