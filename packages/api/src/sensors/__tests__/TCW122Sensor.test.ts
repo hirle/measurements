@@ -7,7 +7,7 @@ import { Unit } from '../../Unit';
 describe('TCW122Sensor', () => {
 
   const mockServer = mockServerGetLocal();
-  const baseTestsData = path.join('packages', 'api', 'src', 'sensors', 'tests', 'data');
+  const baseTestsData = path.join('packages', 'api', 'src', 'sensors', '__tests__', 'data');
 
   // Start your mock server
   beforeEach(() => mockServer.start());
