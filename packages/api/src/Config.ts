@@ -20,7 +20,6 @@ export interface RecorderConfig {
 export interface SensorConfig {
   id: string,
   type: string,
-  recording?: RecorderConfig,
   config: unknown
 }
 

@@ -1,5 +1,5 @@
 import { ApiVersionInterface } from '@measures/restapiinterface';
-import SemVer from 'semver';
+import * as SemVer from 'semver';
 import Supplier from './patterns/Supplier';
 
 export default class GetVersion implements Supplier<ApiVersionInterface> {
@@ -12,7 +12,7 @@ export default class GetVersion implements Supplier<ApiVersionInterface> {
 
     public get() : ApiVersionInterface {
         if( SemVer.valid(this.version) ) {
-            const semVer : SemVer.classes.semVer = SemVer.parse(this.version);
+            const semVer : SemVer.SemVer = SemVer.parse(this.version);
             const returned : ApiVersionInterface = {
                 version: this.version,
                 major: SemVer.major(semVer),
