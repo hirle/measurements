@@ -1,43 +1,7 @@
 import { DatabaseConfig } from '../Config';
 import { MeasurementSupplier } from '../Measurement';
 import MeasurementsDatabase from '../MeasurementsDatabase';
-import { Sensor, SensorValues } from '../sensors/Sensor';
-
-
-class TestingSensor extends Sensor {
-
-  private values: Array<number>;
-  public static onlyKey = 'foo';
-
-  public constructor(id: string) {
-    super(id);
-    this.values = [];
-  }
-
-  public fetchValue(): Promise<SensorValues>{
-    if( this.values.length > 0 ) {
-      const value = {
-        at : new Date(),
-        value : this.values.pop()
-      } 
-      return Promise.resolve({values: new Map([[TestingSensor.onlyKey,value]])});
-    } else {
-      return Promise.reject(new Error());
-    }
-  }
-
-  public pushValue(value: number){
-    this.values.push(value);
-  }
-
-  public getValuesKeys() {
-    return new Set([TestingSensor.onlyKey]);
-  }
-
-  public getKeyValueUnit() {
-    return undefined;
-  }
-}
+import { TestingSensor } from './TestingSensor';
 
 
 describe('MeasurementsDatabase', () => {
