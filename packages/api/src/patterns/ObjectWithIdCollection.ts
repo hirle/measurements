@@ -21,4 +21,8 @@ export class ObjectWithIdCollection<T extends ObjectWithId> {
     }
     return returned;
   }
+
+  public forEach( callback: ( object :T ) => void ) {
+    this.objectsWithID.forEach( (element) => callback(element)  );
+  }
 }

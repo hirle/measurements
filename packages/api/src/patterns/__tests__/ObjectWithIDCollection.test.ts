@@ -22,5 +22,11 @@ describe('ObjectWithIdCollection', () => {
     underTest.add(three);
     expect(underTest.findById('qux')).toBe(three);
 
+    const spy = jest.fn();
+    underTest.forEach(spy);
+    expect(spy).toBeCalledTimes(3);
+    expect(spy).toBeCalledWith(one);
+    expect(spy).toBeCalledWith(two);
+    expect(spy).toBeCalledWith(three);
   });
 });
