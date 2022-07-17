@@ -41,20 +41,43 @@ Copy the file `config.template.json` to `ansible/installs/files/config.json` and
         "path": "/sys/bus/w1/devices/28-0414606b95ff/w1_slave"
       } 
     },
-    { 
+    {
       "id": "my-other-sensor-id",
-      "type" : "tcw122",
-      "recording": {
-        "auto-start": true
-        "period" : "PT1M",
-      },
-      "config" : {
-        "url": "192.168.0.22",
-        "username": "foo",
+      "type": "tcw122",
+      "config": {
+        "url": "http://192.168.0.22",
+        "user": "foo",
         "password": "bar"
-      } 
+      }
     }
-  ]
+  ],
+  "measurements": [
+    {
+      "id": "interior",
+      "sensor-id": "my-sensor-id",
+      "sensor-key": "Temperature2"
+    },
+    {
+      "id": "exterior",
+      "sensor-id": "my-other-sensor-id",
+      "sensor-key": "Temperature1"
+    }
+  ],
+  "recorders": [
+    {
+      "id": "interior-recorder",
+      "measurement-id": "interior",
+      "mode": "manual"
+    },
+    {
+      "id": "interior-recorder",
+      "measurement-id": "exterior",
+      "mode": "periodic",
+      "config" : {
+        "auto-start": true,
+        "period": "PT1M"
+      }
+    }
 }
 ```
 

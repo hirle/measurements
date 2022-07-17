@@ -22,10 +22,9 @@
       "id": "my-other-sensor-id",
       "type": "tcw122",
       "config": {
-        "host": "192.168.0.22",
+        "url": "http://192.168.0.22",
         "user": "foo",
-        "password": "bar",
-        "path": "qux"
+        "password": "bar"
       }
     }
   ],
