@@ -79,7 +79,7 @@ export default class MeasurementsDatabase {
       .then( () => Promise.resolve())
   }
   
-  public getLatestMeasurement(supplier :MeasurementSupplier, count :number): Promise<Measurement[]> {
+  public getLatestMeasurements(supplier :MeasurementSupplier, count :number): Promise<Measurement[]> {
     const tableName = supplier.id;
     const doesTableExist: Promise<boolean> = this.readyTables.has(tableName)
       ? Promise.resolve(true)

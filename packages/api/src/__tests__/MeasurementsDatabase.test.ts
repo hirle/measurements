@@ -27,7 +27,7 @@ describe('MeasurementsDatabase', () => {
         const [measurementOne, measurementTwo ] = measurements;
         return Promise.all([underTest.record(measurementOne), underTest.record(measurementTwo)]);
       })
-      .then(() => underTest.getLatestMeasurement(measurementSupplier,2) )
+      .then(() => underTest.getLatestMeasurements(measurementSupplier,2) )
       .then( measurements => {
         const [obtainedMeasurementOne, obtainedMeasurementTwo] = measurements;
 
