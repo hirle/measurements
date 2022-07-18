@@ -102,7 +102,7 @@ Response:
     "opt": "alpha"
 }
 
-### Get current measurement from a sensor
+### Get current measurement
 
 Request:
 
@@ -111,8 +111,14 @@ Request:
 Response:
 ```javascript
 {
-    "timestamp": "2020-04-09T21:33:22Z",
-    "value": "12.125"
+  "supplier": {
+    "id": "exterior",
+    "key": "Temperature2"
+  },
+  "sensorValue": {
+    "at": "2022-07-17T14:20:36.179Z",
+    "value": 26.8
+  }
 }
 ```
 
@@ -126,6 +132,63 @@ Response:
     "recording": true,
     "location": "bedroom"
 }
+```
+
+### Record a measurement
+
+`POST /api/recorder/(recorder id)/recordOneMeasurement`
+
+Response:
+```javascript
+{
+  "supplier":{
+    "id":"interior",
+    "sensor": {
+      "id":"Teracom1"
+    },
+    "key":"Temperature1"
+  },
+  "sensorValue":{
+    "at":"2022-07-18T13:46:44.688Z",
+    "value":24.2
+  }
+}
+```
+
+### Get last measurement(s) of a recorder
+
+`GET /api/recorder/(recorder id)/measurements/latest[/(number)]`
+
+Response:
+```javascript
+[
+  {
+    "supplier":{
+      "id":"interior",
+      "sensor": {
+        "id":"Teracom1"
+      },
+      "key":"Temperature1"
+    },
+    "sensorValue":{
+      "at":"2022-07-18T13:46:44.688Z",
+      "value":24.2
+    }
+  },
+  {
+    "supplier":{
+      "id":"interior",
+      "sensor": {
+        "id":"Teracom1"
+      },
+      "key":"Temperature1"
+    },
+    "sensorValue":{
+      "at":"2022-07-18T13:47:44.688Z",
+      "value":24.1
+    }
+}
+]
 ```
 
 ## Miscellaneous

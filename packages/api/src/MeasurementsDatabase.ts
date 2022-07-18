@@ -62,7 +62,8 @@ export default class MeasurementsDatabase {
       valueFieldCreator('value').notNullable();
       table.datetime('at', { useTz: true }).notNullable();
 
-      table.index(['at'], 'iAt');
+      const indexName = `i${tableName.charAt(0).toUpperCase() + tableName.slice(1)}At`;
+      table.index(['at'], indexName);
     });
   }
 

@@ -8,10 +8,15 @@ import SupplierHandler from './SupplierHandler';
 import { ApiVersionInterface } from '@measures/restapiinterface';
 import {  SensorCollection } from './sensors/Sensor';
 import { SensorFactory } from './sensors/SensorFactory';
-import { MeasurementSupplier, MeasurementSupplierCollection } from './Measurement';
+import { Measurement, MeasurementSupplier, MeasurementSupplierCollection } from './Measurement';
 import MeasurementsDatabase from './MeasurementsDatabase';
 import RecorderFactory from './recorders/RecorderFactory';
 import { RecorderCollection } from './recorders/Recorder';
+import PromiseSupplierHandler from './PromiseSupplierHandler';
+import RecorderLatestMeasurementsHandler from './RecorderLatestMeasurementsHandler';
+import ManualRecorder from './recorders/ManualRecorder';
+import PeriodicRecorder from './recorders/PeriodicRecorder';
+import RunnableHandler from './RunnableHandler';
 
 export function run(argv: string[]): number {
     
@@ -31,7 +36,7 @@ export function run(argv: string[]): number {
     
     web.startOn()
     
-    setupApiRoutes(web);
+    setupApiRoutes(web, measurementSuppliers, recorders);
 
     logger.info('Ready!');
 
@@ -59,11 +64,41 @@ function setupRecorders( recorderConfigs: RecorderConfig[], measurementSuppliers
   }));
 }
 
-function setupApiRoutes( web: Web ) {
+function setupApiRoutes(
+  web: Web,
+  measurementSuppliers: MeasurementSupplierCollection,
+  recorders: RecorderCollection ) {
 
   // TODO set to process.env.npm_package_version
   const getVersion = new GetVersion('0.0.1');
-  web.recordGetRoute('/api/version', SupplierHandler.create<ApiVersionInterface>(getVersion));
+  web.recordGetRoute('/api/version',SupplierHandler.create<ApiVersionInterface>(getVersion));
+
+  measurementSuppliers.forEach(  ( measurementSupplier: MeasurementSupplier ) => {
+    web.recordGetRoute(`/api/measurement/${measurementSupplier.id}/current`,
+    PromiseSupplierHandler.create<Measurement>(measurementSupplier));
+  });
+
+  recorders.forEach( recorder => {
+    web.recordGetRoute(
+      `/api/recorder/${recorder.id}/measurements/latest(?:/:count([0-9]+))?`,
+      RecorderLatestMeasurementsHandler.create(recorder)
+    );
+    if( recorder instanceof ManualRecorder ) {
+      web.recordPostRoute(`/api/recorder/${recorder.id}/recordOneMeasurement`,
+        PromiseSupplierHandler.create<Measurement>(recorder)
+      );
+    }
+    if( recorder instanceof PeriodicRecorder ) {
+        web.recordPostRoute(
+          `/api/recorder/${recorder.id}/startRecording`,
+          RunnableHandler.create(() => recorder.start())
+        );
+        web.recordPostRoute(
+          `/api/recorder/${recorder.id}/stopRecording`,
+          RunnableHandler.create(() => recorder.stop())
+        );
+    }
+  });
 }
 
 function processArgv(argv: string[]): Config {

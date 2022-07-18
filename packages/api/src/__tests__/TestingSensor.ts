@@ -18,7 +18,7 @@ export class TestingSensor extends Sensor {
       };
       return Promise.resolve({ values: new Map([[TestingSensor.onlyKey, value]]) });
     } else {
-      return Promise.reject(new Error());
+      return Promise.reject(new Error('no value available'));
     }
   }
 

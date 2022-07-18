@@ -37,4 +37,8 @@ export default class Web {
     recordGetRoute(path: string, requestHandler: RequestHandler ): void {
         this.app.get(path, requestHandler);
     }
+
+    recordPostRoute(path: string, requestHandler: RequestHandler ): void {
+        this.app.post(path, requestHandler);
+    }
 }

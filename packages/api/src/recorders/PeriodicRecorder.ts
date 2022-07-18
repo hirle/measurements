@@ -22,6 +22,7 @@ export default class PeriodicRecorder extends ManualRecorder {
   }
 
   public start(){
+    this.cycle();
     this.cycleId = setInterval(this.cycle.bind(this), this.period )
   } 
 
