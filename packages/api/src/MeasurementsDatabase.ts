@@ -81,14 +81,16 @@ export default class MeasurementsDatabase {
   
   public getLatestMeasurements(supplier :MeasurementSupplier, count :number): Promise<Measurement[]> {
     const tableName = supplier.id;
+
     const doesTableExist: Promise<boolean> = this.readyTables.has(tableName)
       ? Promise.resolve(true)
       : this.db.schema.hasTable(tableName);
     
     return doesTableExist
-      .then( tableExists => tableExists ? Promise.resolve() : Promise.reject(new Error(`table ${tableName} does not exist`)))
-      .then( () => this.db.select().from<SensorValue>(tableName).limit(count).orderBy('at', 'desc') )
-      .then( altmostMeasurements => altmostMeasurements.map( (sensorValue: unknown) => new Measurement(supplier, narrowSensorValue(sensorValue))));
-
+      .then( tableExists => tableExists
+        ? (this.db.select().from<SensorValue>(tableName).limit(count).orderBy('at', 'desc')
+          .then(altmostMeasurements => altmostMeasurements.map((sensorValue: unknown) => new Measurement(supplier, narrowSensorValue(sensorValue)))))
+        : Promise.resolve([])
+      );
   }
 }

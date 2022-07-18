@@ -42,4 +42,21 @@ describe('MeasurementsDatabase', () => {
         underTest.disconnect();
       });
   });
+
+  it('should return empty array on recoder without measures ', () => {
+    const underTest = new MeasurementsDatabase(memorySqliteConfig);
+
+    const testingSensor = new TestingSensor('no value');
+
+    const measurementSupplier = new MeasurementSupplier('noValueYet', testingSensor, TestingSensor.onlyKey);
+
+    return underTest.getLatestMeasurements(measurementSupplier,2)
+      .then( measurements => {
+        expect(Array.isArray(measurements)).toBe(true);
+        expect(measurements).toHaveLength(0);
+
+        underTest.disconnect();
+      });
+  });
+
 });
