@@ -1,7 +1,7 @@
 import { NextFunction } from "express";
 import { Request, Response } from 'express-serve-static-core';
 
-import Recorder from "./recorders/Recorder";
+import Recorder from "../recorders/Recorder";
 
 export default class RecorderLatestMeasurementsHandler {
   constructor( readonly recorder: Recorder ){}

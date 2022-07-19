@@ -4,7 +4,7 @@ import fs from 'fs';
 import Logger from "./Logger";
 import Web from "./Web";
 import GetVersion from './GetVersion';
-import SupplierHandler from './SupplierHandler';
+import SupplierHandler from './handlers/SupplierHandler';
 import { ApiVersionInterface } from '@measures/restapiinterface';
 import {  SensorCollection } from './sensors/Sensor';
 import { SensorFactory } from './sensors/SensorFactory';
@@ -12,11 +12,11 @@ import { Measurement, MeasurementSupplier, MeasurementSupplierCollection } from 
 import MeasurementsDatabase from './MeasurementsDatabase';
 import RecorderFactory from './recorders/RecorderFactory';
 import { RecorderCollection } from './recorders/Recorder';
-import PromiseSupplierHandler from './PromiseSupplierHandler';
-import RecorderLatestMeasurementsHandler from './RecorderLatestMeasurementsHandler';
+import PromiseSupplierHandler from './handlers/PromiseSupplierHandler';
+import RecorderLatestMeasurementsHandler from './handlers/RecorderLatestMeasurementsHandler';
 import ManualRecorder from './recorders/ManualRecorder';
 import PeriodicRecorder from './recorders/PeriodicRecorder';
-import RunnableHandler from './RunnableHandler';
+import RunnableHandler from './handlers/RunnableHandler';
 
 export function run(argv: string[]): number {
     
