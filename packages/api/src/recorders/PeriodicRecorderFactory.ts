@@ -24,7 +24,7 @@ export default class PeriodicRecorderFactory {
     }
   }
 
-  private static getAutoStartFromConfig(config: unknown) {
+  private static getAutoStartFromConfig(config: unknown): boolean {
     if ( typeof config === 'object' &&
       config !== null &&
       'auto-start' in config ) {
