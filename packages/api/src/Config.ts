@@ -12,7 +12,6 @@ export interface DatabaseConfig {
 
 export interface RecorderConfig {
   id: string,
-  "measurement-id": string,
   mode: string,
   config?: unknown
 } 
