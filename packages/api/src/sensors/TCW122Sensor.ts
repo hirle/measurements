@@ -117,7 +117,7 @@ export class TCW122Sensor extends Sensor {
 
   private static decodeVoltage( rawValue: string): number
   {
-    const readVoltsExpr = /(\d+)\.(\d)V/;
+    const readVoltsExpr = /(\d{1,2})\.(\d)V/;
     const decodedValues = readVoltsExpr.exec(rawValue)
     if( decodedValues ) {
       return Number( decodedValues[1] + '.' + decodedValues[2] );
@@ -127,7 +127,7 @@ export class TCW122Sensor extends Sensor {
   }
 
   private static decodeTemperature(rawValue: string): number {
-    const res = rawValue.match(/(-?)(\d+)\.(\d)°C/);
+    const res = rawValue.match(/(-?)(\d{1,2})\.(\d)°C/);
     if( res ) {
       const sign = Number( res[1] + '1' ) ;
       const temperature = sign * ( Number(res[2]) + Number(res[3])/10 );
