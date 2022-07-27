@@ -1,5 +1,7 @@
 **This project is under construction**
 
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=hirle_measures)
+
 # Measures
 
 Measures records data from your sensors into your database. Describe what your sensors are, how you would like to record them, and Measures will faithfully fill your database.
@@ -28,23 +30,54 @@ Copy the file `config.template.json` to `ansible/installs/files/config.json` and
     }
   }
   "sensors" : [
-    "my-sensor-id": { 
+    { 
+      "id": "my-sensor-id",
       "type" : "1wire",
-      "period" : "PT30S",
+      "recording": {
+        "auto-start": true
+        "period" : "PT30S",
+      },
       "config" : {
         "path": "/sys/bus/w1/devices/28-0414606b95ff/w1_slave"
       } 
     },
-    "my-other-sensor-id": { 
-      "type" : "tcw122",
-      "period" : "PT1M",
-      "config" : {
-        "host": "192.168.0.22"
-        "user": "foo"
+    {
+      "id": "my-other-sensor-id",
+      "type": "tcw122",
+      "config": {
+        "url": "http://192.168.0.22",
+        "user": "foo",
         "password": "bar"
-      } 
+      }
     }
-  ]
+  ],
+  "measurements": [
+    {
+      "id": "interior",
+      "sensor-id": "my-sensor-id",
+      "sensor-key": "Temperature2"
+    },
+    {
+      "id": "exterior",
+      "sensor-id": "my-other-sensor-id",
+      "sensor-key": "Temperature1"
+    }
+  ],
+  "recorders": [
+    {
+      "id": "interior-recorder",
+      "measurement-id": "interior",
+      "mode": "manual"
+    },
+    {
+      "id": "interior-recorder",
+      "measurement-id": "exterior",
+      "mode": "periodic",
+      "config" : {
+        "auto-start": true,
+        "period": "PT1M"
+      }
+    }
 }
 ```
 
@@ -69,23 +102,29 @@ Response:
     "opt": "alpha"
 }
 
-### Get current value of a sensor
+### Get current measurement
 
 Request:
 
-`GET /api/sensor/(sensor id)/current`
+`GET /api/measurement/(measurement id)/current`
 
 Response:
 ```javascript
 {
-    "timestamp": "2020-04-09T21:33:22Z",
-    "value": "12.125"
+  "supplier": {
+    "id": "exterior",
+    "key": "Temperature2"
+  },
+  "sensorValue": {
+    "at": "2022-07-17T14:20:36.179Z",
+    "value": 26.8
+  }
 }
 ```
 
-### Get current status of a sensor
+### Get current status of a recorder
 
-`GET /api/sensor/(sensor id)/status`
+`GET /api/recorder/(recorder id)/status`
 
 Response:
 ```javascript
@@ -93,6 +132,63 @@ Response:
     "recording": true,
     "location": "bedroom"
 }
+```
+
+### Record a measurement
+
+`POST /api/recorder/(recorder id)/recordOneMeasurement`
+
+Response:
+```javascript
+{
+  "supplier":{
+    "id":"interior",
+    "sensor": {
+      "id":"Teracom1"
+    },
+    "key":"Temperature1"
+  },
+  "sensorValue":{
+    "at":"2022-07-18T13:46:44.688Z",
+    "value":24.2
+  }
+}
+```
+
+### Get last measurement(s) of a recorder
+
+`GET /api/recorder/(recorder id)/measurements/latest[/(number)]`
+
+Response:
+```javascript
+[
+  {
+    "supplier":{
+      "id":"interior",
+      "sensor": {
+        "id":"Teracom1"
+      },
+      "key":"Temperature1"
+    },
+    "sensorValue":{
+      "at":"2022-07-18T13:46:44.688Z",
+      "value":24.2
+    }
+  },
+  {
+    "supplier":{
+      "id":"interior",
+      "sensor": {
+        "id":"Teracom1"
+      },
+      "key":"Temperature1"
+    },
+    "sensorValue":{
+      "at":"2022-07-18T13:47:44.688Z",
+      "value":24.1
+    }
+}
+]
 ```
 
 ## Miscellaneous

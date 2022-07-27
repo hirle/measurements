@@ -1,0 +1,1 @@
+export type Unit = '°C'| undefined | 'V';

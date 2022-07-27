@@ -22,7 +22,7 @@ export default class Web {
 
         this.app.use(BodyParserJson());  
 
-        this.app.all('*', (req, res, next) => {
+        this.app.all('*', (req, _res, next) => {
             console.log(req.method + ' ' + req.url)
             next()
           })
@@ -36,5 +36,9 @@ export default class Web {
 
     recordGetRoute(path: string, requestHandler: RequestHandler ): void {
         this.app.get(path, requestHandler);
+    }
+
+    recordPostRoute(path: string, requestHandler: RequestHandler ): void {
+        this.app.post(path, requestHandler);
     }
 }

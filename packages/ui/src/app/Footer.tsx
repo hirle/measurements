@@ -7,20 +7,22 @@ interface FooterState {
   version: string;
 }
 
-  
 export default class Footer extends Component<FooterProps, FooterState> {
 
   public static defaultProps: FooterState = {
     version: '(Loading...)'
   };
 
+  private api: Api;
+
   constructor(props: FooterProps) {
       super(props);
       this.state = {version: ''};
+      this.api = Api.create();
     }
   
   override componentDidMount() {
-    Api.GetVersion()
+    this.api.GetVersion()
       .then( data => {
           this.setState({version: data.version});
       })
