@@ -1,11 +1,27 @@
 import { ApiVersionInterface, narrowApiVersionInterface } from '@measures/restapiinterface';
-import axios, { AxiosResponse } from 'axios';
+import axios, { Axios, AxiosResponse } from 'axios';
 
 export default class Api {
-  static GetVersion(): Promise<ApiVersionInterface> {
-    return axios.get('/api/version')
+
+  private axios: Axios;
+  static readonly defaultTimeout = 3000;
+
+  private constructor( baseURL?: string ){
+    this.axios = axios.create({
+      timeout: Api.defaultTimeout,
+      baseURL,
+      headers: {'X-Requested-With': 'XMLHttpRequest'}
+    });
+  }
+
+  GetVersion(): Promise<ApiVersionInterface> {
+    return this.axios.get('/api/version')
       .then( response => Api.checkStatus(response) )
       .then( data => Promise.resolve(narrowApiVersionInterface(data)));
+  }
+
+  public static create(baseURL?: string) {
+    return new Api(baseURL);
   }
 
   private static checkStatus(response: AxiosResponse): Promise<unknown> {
@@ -20,7 +36,7 @@ export default class Api {
           response.statusText,
           response.data ? response.data.toString() : null,
         ].join(':');
-        throw new Error(errorMessage);
+        return Promise.reject(new Error(errorMessage));
       }
     }
   }
