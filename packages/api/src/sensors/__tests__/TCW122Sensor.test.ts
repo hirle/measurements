@@ -52,7 +52,105 @@ describe('TCW122Sensor', () => {
       });
   });
 
-  it('should fetchValue to obtain data protected by password', () => {
+  it('should fetchValue and reject on bad checksum temperature', () => {
+
+    const simpleTestConfig: TCW122SensorConfigInterface = {
+      url: mockServer.url
+    };
+
+    mockServer.forGet("/status.xml")
+      .thenFromFile(
+        200,
+        path.resolve(baseTestsData, 'status.badchecksum.xml'),
+        {'Content-Type': 'text/xml'}
+        );
+
+
+    const underTest = TCW122Sensor.create('foo', simpleTestConfig);
+    return expect(underTest.fetchValue()).rejects
+      .toEqual(new Error('bad checksum'));
+  });
+
+  it('should fetchValue and reject on badly formatted temperature', () => {
+
+    const simpleTestConfig: TCW122SensorConfigInterface = {
+      url: mockServer.url
+    };
+
+    mockServer.forGet("/status.xml")
+      .thenFromFile(
+        200,
+        path.resolve(baseTestsData, 'status.bad.format.temperature.xml'),
+        {'Content-Type': 'text/xml'}
+        );
+
+
+    const underTest = TCW122Sensor.create('foo', simpleTestConfig);
+    return expect(underTest.fetchValue()).rejects
+      .toEqual(new Error('invalid value bad format temperature'));
+  });
+
+  it('should fetchValue and reject on badly formatted voltage', () => {
+
+    const simpleTestConfig: TCW122SensorConfigInterface = {
+      url: mockServer.url
+    };
+
+    mockServer.forGet("/status.xml")
+      .thenFromFile(
+        200,
+        path.resolve(baseTestsData, 'status.bad.voltage.xml'),
+        {'Content-Type': 'text/xml'}
+        );
+
+
+    const underTest = TCW122Sensor.create('foo', simpleTestConfig);
+    return expect(underTest.fetchValue())
+      .rejects
+      .toEqual(new Error('invalid value bad format voltage'));
+  });
+
+  it('should fetchValue and reject on badly formatted digital', () => {
+
+    const simpleTestConfig: TCW122SensorConfigInterface = {
+      url: mockServer.url
+    };
+
+    mockServer.forGet("/status.xml")
+      .thenFromFile(
+        200,
+        path.resolve(baseTestsData, 'status.bad.digital.xml'),
+        {'Content-Type': 'text/xml'}
+        );
+
+
+    const underTest = TCW122Sensor.create('foo', simpleTestConfig);
+    return expect(underTest.fetchValue())
+      .rejects
+      .toEqual(new Error('invalid value bad format digital'));
+  });
+
+  it('should fetchValue and reject on empty monitor', () => {
+
+    const simpleTestConfig: TCW122SensorConfigInterface = {
+      url: mockServer.url
+    };
+
+    mockServer.forGet("/status.xml")
+      .thenFromFile(
+        200,
+        path.resolve(baseTestsData, 'status.missing.key.xml'),
+        {'Content-Type': 'text/xml'}
+        );
+
+
+    const underTest = TCW122Sensor.create('foo', simpleTestConfig);
+    return expect(underTest.fetchValue())
+      .rejects
+      .toEqual(new Error('invalid value undefined'));
+  });
+
+  it('should fetchValue to obtain data protected with user and password', () => {
     const protectedTestConfig: TCW122SensorConfigInterface = {
       url: mockServer.url,
       username: 'foo',
@@ -69,6 +167,15 @@ describe('TCW122Sensor', () => {
         const dataID = data.values.get('ID');
         expect(dataID.value).toBe('00:04:A3:AA:11:8E');
       });
+  });
+
+  it('should throw if user provided but not password', () => {
+    const protectedTestConfig: TCW122SensorConfigInterface = {
+      url: mockServer.url,
+      username: 'foo'
+    };
+
+    expect( () => TCW122Sensor.create('foo', protectedTestConfig)).toThrowError('Basic auth username without password is not permitted');
   });
 
   it('should handle badly formatted response', () => {

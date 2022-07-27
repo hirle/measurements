@@ -55,7 +55,10 @@ export class TCW122Sensor extends Sensor {
     const baseUrl = new URL(config.url);
     this.queryUrl = new URL('/status.xml', baseUrl);
     if( config.username ) {
-      this.queryUrl.searchParams.append('a',`${config.username}:${config.password ? config.password:''}`);
+      if( ! config.password ){
+        throw new Error('Basic auth username without password is not permitted')
+      } 
+      this.queryUrl.searchParams.append('a',`${config.username}:${config.password}`);
     }
   }
 
