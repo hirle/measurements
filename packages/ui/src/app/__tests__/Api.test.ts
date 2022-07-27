@@ -1,24 +1,21 @@
 import Api from '../Api';
-import ServerMock from 'mock-http-server';
+import 'core-js'; 
+import { getLocal as mockServerGetLocal } from 'mockttp';
 
 describe('Api', ()=>{
 
-  // http://localhost:9000 reflected in jest.config.js
-  const server = new ServerMock({ host: "localhost", port: 9000 });
-  const baseUrl = 'http://localhost:9000';
+  // the url http://localhost:9000 reflected in jest.config.js
+  const portNumber = 9000;
+  const mockServer = mockServerGetLocal();
   
-  beforeEach(function(done) {
-      server.start(done);
-  });
-
-  afterEach(function(done) {
-      server.stop(done);
-  });
+  // Start your mock server
+  beforeEach(() => mockServer.start(portNumber));
+  afterEach(() => mockServer.stop());
 
 
   it('should get version', async ()=>{
 
-    const underTest = Api.create(baseUrl);
+    const underTest = Api.create(mockServer.url);
 
     const payload = {
       version: '1.2.3',
@@ -27,15 +24,8 @@ describe('Api', ()=>{
       patch: 3
     }
 
-    server.on({
-      method: 'GET',
-      path: '/api/version',
-      reply: {
-          status:  200,
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify(payload)
-      }
-    });
+    mockServer.forGet('/api/version')
+      .thenJson(200, payload);
 
     return underTest.GetVersion()
       .then( data => {
@@ -45,21 +35,14 @@ describe('Api', ()=>{
 
   it('should handle bad http status code', done =>{
 
-    const underTest = Api.create(baseUrl);
+    const underTest = Api.create(mockServer.url);
 
-    server.on({
-      method: 'GET',
-      path: '/api/version',
-      reply: {
-          status:  503,
-          headers: { "content-type": "text/plain" },
-          body: 'rainy day'
-      }
-    });
+    mockServer.forGet('/api/version')
+      .thenReply(503, 'raindy day', { 'content-type': 'text/plain' });
 
     underTest.GetVersion()
       .then( () => {
-        fail('should not resolve')
+        fail('should not resolve');
       })
       .catch( err  => {
         expect(err).toBeInstanceOf(Error);

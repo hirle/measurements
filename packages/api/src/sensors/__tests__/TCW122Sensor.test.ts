@@ -20,7 +20,11 @@ describe('TCW122Sensor', () => {
     };
 
     mockServer.forGet("/status.xml")
-      .thenFromFile(200, path.resolve(baseTestsData, 'status.xml'), {'Content-Type': 'text/xml'});
+      .thenFromFile(
+        200,
+        path.resolve(baseTestsData, 'status.xml'),
+        {'Content-Type': 'text/xml'}
+        );
 
     const underTest = TCW122Sensor.create('foo', simpleTestConfig);
     return underTest.fetchValue()
