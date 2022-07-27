@@ -63,8 +63,8 @@ describe('Api', ()=>{
       })
       .catch( err  => {
         expect(err).toBeInstanceOf(Error);
+        expect(err.toString()).toContain('503');
         done();
       });
   });
-
 });

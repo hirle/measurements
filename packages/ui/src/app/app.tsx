@@ -1,7 +1,8 @@
 import styled from 'styled-components';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { Route } from 'react-router-dom';
 import Footer from './Footer';
+
 
 const Main: FunctionComponent<void> = () => 
   <div>
