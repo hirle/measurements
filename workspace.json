@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "api": "packages/api",
+    "full-stack": "packages/full-stack",
     "restapiinterface": "packages/restapiinterface",
     "ui": "packages/ui",
     "ui-e2e": "packages/ui-e2e"

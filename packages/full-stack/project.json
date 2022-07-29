@@ -1,0 +1,34 @@
+{
+    "root": "packages/full-stack",
+    "sourceRoot": "packages/full-stack",
+    "projectType": "application",
+    "implicitDependencies": [ "api", "ui"],
+    "targets": {
+      "package": {
+        "executor": "@nrwl/workspace:run-commands",
+        "outputs": ["dist/package.tgz"],
+        "dependsOn": [
+          {
+            "target": "build",
+            "projects": "dependencies"
+          }
+        ],  
+        "configurations": {
+          "production": {
+          }
+        },
+        "options": {
+            "commands": [
+                "rm -rf packages/full-stack",
+                "mkdir packages/full-stack",
+                "cp -R packages/api/* packages/full-stack",
+                "mkdir packages/full-stack/static",
+                "cp -R packages/ui/* packages/full-stack/static",
+                "tar -cvf package.tgz -Z -C packages/full-stack . "
+            ],
+            "cwd": "dist",
+            "parallel": false
+        }
+      }
+    }
+}
