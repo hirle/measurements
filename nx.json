@@ -1,6 +1,6 @@
 {
   "extends": "@nrwl/workspace/presets/core.json",
-  "npmScope": "measures",
+  "npmScope": "measurements",
   "affected": {
     "defaultBase": "main"
   },

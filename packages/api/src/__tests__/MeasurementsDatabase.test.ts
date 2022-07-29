@@ -43,7 +43,7 @@ describe('MeasurementsDatabase', () => {
       });
   });
 
-  it('should return empty array on recoder without measures ', () => {
+  it('should return empty array on recoder without measurements ', () => {
     const underTest = new MeasurementsDatabase(memorySqliteConfig);
 
     const testingSensor = new TestingSensor('no value');

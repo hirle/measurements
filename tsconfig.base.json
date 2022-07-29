@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@measures/restapiinterface": ["packages/restapiinterface/src/index.ts"]
+      "@measurements/restapiinterface": ["packages/restapiinterface/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,4 +1,4 @@
-import { ApiVersionInterface } from '@measures/restapiinterface';
+import { ApiVersionInterface } from '@measurements/restapiinterface';
 import * as SemVer from 'semver';
 import Supplier from './patterns/Supplier';
 

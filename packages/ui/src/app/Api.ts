@@ -1,4 +1,4 @@
-import { ApiVersionInterface, narrowApiVersionInterface } from '@measures/restapiinterface';
+import { ApiVersionInterface, narrowApiVersionInterface } from '@measurements/restapiinterface';
 import axios, { Axios, AxiosResponse } from 'axios';
 
 export default class Api {

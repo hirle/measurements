@@ -1,11 +1,11 @@
 **This project is under construction**
 
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=hirle_measures)
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=hirle_measurements)
 
-# Measures
+# Measurements
 
-Measures records data from your sensors into your database. Describe what your sensors are, how you would like to record them, and Measures will faithfully fill your database.
-Measures has an UI wich intention is to let you monitor your recordings are running well. Therefore is has not all the features a data scientist would dream off.
+Measurementss records your sensors data into your database. Describe what your sensors are, how you would like to record them, and Measurements will faithfully fill your database.
+Measurements has an UI wich intention is to let you monitor the recordings. Therefore is has not all the features a data scientist would dream off.
 
 ## Run
 
@@ -33,10 +33,6 @@ Copy the file `config.template.json` to `ansible/installs/files/config.json` and
     { 
       "id": "my-sensor-id",
       "type" : "1wire",
-      "recording": {
-        "auto-start": true
-        "period" : "PT30S",
-      },
       "config" : {
         "path": "/sys/bus/w1/devices/28-0414606b95ff/w1_slave"
       } 
