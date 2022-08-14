@@ -18,9 +18,11 @@ describe('ObjectWithIdCollection', () => {
     expect(underTest.findById('foo')).toBe(one);
     expect(underTest.findById('bar')).toBe(two);
     expect( () => underTest.findById('qux')).toThrowError();
+    expect(underTest.size()).toBe(2);
 
     underTest.add(three);
     expect(underTest.findById('qux')).toBe(three);
+    expect(underTest.size()).toBe(3);
 
     const spy = jest.fn();
     underTest.forEach(spy);

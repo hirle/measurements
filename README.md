@@ -1,6 +1,5 @@
 **This project is under construction**
 
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=hirle_measurements)
 
 # Measurements
 
@@ -28,7 +27,7 @@ Copy the file `config.template.json` to `ansible/installs/files/config.json` and
       "port": 5432,
       "database": "postgres"
     }
-  }
+  },
   "sensors" : [
     { 
       "id": "my-sensor-id",
@@ -74,6 +73,7 @@ Copy the file `config.template.json` to `ansible/installs/files/config.json` and
         "period": "PT1M"
       }
     }
+  ]  
 }
 ```
 
@@ -193,3 +193,6 @@ This project was generated using [Nx](https://nx.dev).
 
 <p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="150"></p>
 
+The code quality of this project is scanned using Sonarcloud
+
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=hirle_measurements)
