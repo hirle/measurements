@@ -14,13 +14,13 @@ export default class ManualRecorder extends Recorder implements Supplier<Promise
 
   public recordOneMeasurement(): Promise<Measurement> {
     return this.measurementSupplier.get()
-    .then( (measurement: Measurement) => {
-      return this.database.record(measurement)
-        .then( () => { 
-            ManualRecorder.appLogger.info( `Measurement ${measurement.getSupplier().id} ${measurement.getSupplier().key} recorded`);
-            return Promise.resolve(measurement)
-         });
-    });
+      .then( (measurement: Measurement) => {
+        return this.database.record(measurement)
+          .then( () => { 
+              ManualRecorder.appLogger.info( `Measurement ${measurement.getSupplier().id} ${measurement.getSupplier().key} recorded`);
+              return Promise.resolve(measurement)
+          });
+      });
   }
 
   public get(): Promise<Measurement> {
