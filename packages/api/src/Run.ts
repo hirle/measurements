@@ -1,6 +1,6 @@
 import Config, { SensorConfig, MeasurementSupplierConfig, RecorderConfig, LogsConfig } from './Config';
 import DefaultConfig from './default.config.json';
-import fs from 'fs';
+import * as fs from 'fs';
 import { getLogger as Log4jsGetLogger, configure as Log4jsConfigure } from 'log4js';
 import * as path from 'path';
 import Web from "./Web";
@@ -62,9 +62,9 @@ function setupLogger(logConfig?:LogsConfig) {
       appDateRollingFile: createDateRollingFile('app.log')
     },
     categories: {
-      default: { appenders: ["stdout"], level: "warning" },
-      web:  { appenders: ["webDateRollingFile"], level: "info" },
-      app:  { appenders: ["appDateRollingFile"], level: "info" }
+      default: { appenders: ["stdout"], level: 'WARN' },
+      web:  { appenders: ["webDateRollingFile"], level: 'INFO' },
+      app:  { appenders: ["appDateRollingFile"], level: 'INFO' }
     }
   });
   
