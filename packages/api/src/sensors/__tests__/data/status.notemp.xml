@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<Monitor>
+  <Device>TCW122B-CM</Device>
+  <ID>00:04:A3:AA:11:8E</ID>
+  <Hostname>TERACOM1       </Hostname>
+  <FW>3.16</FW>
+  <DigitalInput1Description>PorteGarage</DigitalInput1Description>
+  <DigitalInput1>CLOSED</DigitalInput1>
+  <DinAlarm1>0</DinAlarm1>
+  <DigitalInput2Description>IRcouloir</DigitalInput2Description>
+  <DigitalInput2>CLOSED</DigitalInput2>
+  <DinAlarm2>0</DinAlarm2>
+  <AnalogInput1Description>Alim 12V</AnalogInput1Description>
+  <AnalogInput1>12.0V</AnalogInput1>
+  <AinAlarm1>0</AinAlarm1>
+  <AnalogInput2Description>Alim 5V</AnalogInput2Description>
+  <AnalogInput2>5.0V</AnalogInput2>
+  <AinAlarm2>0</AinAlarm2>
+  <Sensor1Description>TInt</Sensor1Description>
+  <Temperature1>---</Temperature1>
+  <TempAlarm1>0</TempAlarm1>
+  <Humidity1>---</Humidity1>
+  <HumAlarm1>0</HumAlarm1>
+  <Sensor2Description>TExt</Sensor2Description>
+  <Temperature2>---</Temperature2>
+  <TempAlarm2>0</TempAlarm2>
+  <Humidity2>---</Humidity2>
+  <HumAlarm2>0</HumAlarm2>
+  <Relay1Description>CameraInt</Relay1Description>
+  <Relay1>OFF</Relay1>
+  <Relay1Control></Relay1Control>
+  <Relay2Description>CameraNord</Relay2Description>
+  <Relay2>OFF</Relay2>
+  <Relay2Control></Relay2Control>
+  <pulseWidth>1</pulseWidth>
+</Monitor>

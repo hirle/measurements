@@ -52,6 +52,26 @@ describe('TCW122Sensor', () => {
       });
   });
 
+  it('should fetchValue and handle no temperature', () => {
+
+    const simpleTestConfig: TCW122SensorConfigInterface = {
+      url: mockServer.url
+    };
+
+    mockServer.forGet("/status.xml")
+      .thenFromFile(
+        200,
+        path.resolve(baseTestsData, 'status.notemp.xml'),
+        {'Content-Type': 'text/xml'}
+        );
+
+    const underTest = TCW122Sensor.create('bar', simpleTestConfig);
+    return underTest.fetchValue()
+      .then(data => {
+          expect(data.values.has('Temperature1')).toBe(false);
+      });
+  });
+
   it('should fetchValue and reject on bad checksum temperature', () => {
 
     const simpleTestConfig: TCW122SensorConfigInterface = {
