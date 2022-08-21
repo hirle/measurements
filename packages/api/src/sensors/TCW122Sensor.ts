@@ -72,10 +72,13 @@ export class TCW122Sensor extends Sensor {
             };
             for( const [key, decoding] of TCW122Sensor.keyProcessingMap ) {
               const [decoder] = decoding;
-              returned.values.set(key, {
-                  at,
-                  value: decoder(TCW122Sensor.readValue(mayBeValues, key))
-                });
+              const decodedValue = decoder(TCW122Sensor.readValue(mayBeValues, key));
+              if( typeof decodedValue !== 'undefined' ){ 
+                returned.values.set(key, {
+                    at,
+                    value: decodedValue
+                  });
+              }
             }
             return returned;
           });
@@ -129,18 +132,22 @@ export class TCW122Sensor extends Sensor {
     }
   }
 
-  private static decodeTemperature(rawValue: string): number {
-    const res = rawValue.match(/(-?)(\d{1,2})\.(\d)°C/);
-    if( res ) {
-      const sign = Number( res[1] + '1' ) ;
-      const temperature = sign * ( Number(res[2]) + Number(res[3])/10 );
-      const badChecksumTemp = 85;
-      if( temperature >= badChecksumTemp){
-        throw new Error(`bad checksum`); 
+  private static decodeTemperature(rawValue: string): number|undefined {
+    if( rawValue === '---') {  
+      return undefined;
+    } else { 
+      const res = rawValue.match(/(-?)(\d{1,2})\.(\d)°C/);
+      if( res ) {
+        const sign = Number( res[1] + '1' ) ;
+        const temperature = sign * ( Number(res[2]) + Number(res[3])/10 );
+        const badChecksumTemp = 85;
+        if( temperature >= badChecksumTemp){
+          throw new Error(`bad checksum`); 
+        }
+        return temperature;
+      } else {
+        throw new Error(`invalid value ${rawValue}`)
       }
-      return temperature;
-    } else {
-      throw new Error(`invalid value ${rawValue}`)
     }
   }
 }
