@@ -33,5 +33,9 @@
         "period": "PT1M"
       }
     }
-  ]
+  ],
+  "logs":{
+    "dir": "./logs",
+    "retention": 7
+  }
 }
