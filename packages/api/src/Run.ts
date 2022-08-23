@@ -1,7 +1,7 @@
 import Config, { SensorConfig, MeasurementSupplierConfig, RecorderConfig, LogsConfig } from './Config';
 import DefaultConfig from './default.config.json';
 import * as fs from 'fs';
-import { getLogger as Log4jsGetLogger, configure as Log4jsConfigure } from 'log4js';
+import * as Log4js from 'log4js';
 import * as path from 'path';
 import Web from "./Web";
 import GetVersion from './GetVersion';
@@ -55,7 +55,7 @@ function setupLogger(logConfig?:LogsConfig) {
     pattern: '.yyyy-MM-dd'
   });
 
-  Log4jsConfigure({
+  Log4js.configure({
     appenders: {
       stdout: { type: "stdout" },
       webDateRollingFile: createDateRollingFile('web.log'),
@@ -72,7 +72,7 @@ function setupLogger(logConfig?:LogsConfig) {
 
 function setSensorsUp(sensors: SensorConfig[]): SensorCollection {
   const returned = new SensorCollection( sensors.map( sensorConfig => SensorFactory.create(sensorConfig)) );
-  Log4jsGetLogger().info( `${returned.size()} sensors set up` );
+  Log4js.getLogger().info( `${returned.size()} sensors set up` );
   return returned;
 }
 
@@ -84,7 +84,7 @@ function setMeasurementSuppliersUp( measurementConfigs: MeasurementSupplierConfi
     }
     return new MeasurementSupplier(measurementConfig.id, sensor, measurementConfig['sensor-key']);
   }));
-  Log4jsGetLogger().info( `${returned.size()} measurement supplier set up` );
+  Log4js.getLogger().info( `${returned.size()} measurement supplier set up` );
   return returned;
 }
 
@@ -93,7 +93,7 @@ function setRecordersUp( recorderConfigs: RecorderConfig[], measurementSuppliers
     const measurementSupplier = measurementSuppliers.findById(recorderConfig['measurement-id'])
     return RecorderFactory.create(recorderConfig, measurementSupplier, measurementDb);
   }));
-  Log4jsGetLogger().info( `${returned.size()} recorders set up` );
+  Log4js.getLogger().info( `${returned.size()} recorders set up` );
   return returned;
 }
 
@@ -136,7 +136,7 @@ function setApiRoutesUp(
     }
   });
 
-  Log4jsGetLogger().info( `Web paths set up` );
+  Log4js.getLogger().info( `Web paths set up` );
 }
 
 function processArgv(argv: string[]): Config {

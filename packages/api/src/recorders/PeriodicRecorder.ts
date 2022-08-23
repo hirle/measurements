@@ -3,11 +3,11 @@ import MeasurementsDatabase from "../MeasurementsDatabase";
 import {Duration} from 'luxon';
 import { setInterval } from 'timers';
 import ManualRecorder from "./ManualRecorder";
-import { getLogger as Log4jsGetLogger } from 'log4js';
+import * as Log4js from 'log4js';
 
 export default class PeriodicRecorder extends ManualRecorder {
 
-  protected static appLogger = Log4jsGetLogger('app');
+  protected static appLogger = Log4js.getLogger('app');
   
   private cycleId: NodeJS.Timer;
   private period: number;

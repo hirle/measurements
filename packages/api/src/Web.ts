@@ -1,8 +1,8 @@
-import express, { RequestHandler } from 'express';
+import * as express from 'express';
 import { json as BodyParserJson }  from 'body-parser';
 import { Server as HttpServer } from 'http';
 import { Server as socketIOServer} from 'socket.io';
-import { getLogger as Log4jsGetLogger, connectLogger as Log4jsConnectLogger } from 'log4js';
+import * as Log4js from 'log4js';
 
 export default class Web {
 
@@ -10,10 +10,10 @@ export default class Web {
     private app: express.Application;
     private httpServer: HttpServer;
     private io: socketIOServer;
-    private static webLogger = Log4jsGetLogger('web');
+    private static webLogger = Log4js.getLogger('web');
 
     constructor(httpPort: number) {
-        this.app = express()
+        this.app = express.default();
         this.httpPort = httpPort;
         this.httpServer = new HttpServer(this.app)
         this.io = new socketIOServer(this.httpServer);
@@ -21,7 +21,7 @@ export default class Web {
 
     startOn( ) {
 
-        this.app.use(Log4jsConnectLogger(Web.webLogger, { level: "info" }));
+        this.app.use(Log4js.connectLogger(Web.webLogger, { level: "info" }));
 
         this.app.use(BodyParserJson());  
 
@@ -32,12 +32,12 @@ export default class Web {
         });
     }
 
-    recordGetRoute(path: string, requestHandler: RequestHandler ): void {
+    recordGetRoute(path: string, requestHandler: express.RequestHandler ): void {
         this.app.get(path, requestHandler);
         Web.webLogger.trace(`Record get on ${path}`);
     }
 
-    recordPostRoute(path: string, requestHandler: RequestHandler ): void {
+    recordPostRoute(path: string, requestHandler: express.RequestHandler ): void {
         this.app.post(path, requestHandler);
         Web.webLogger.trace(`Record get on ${path}`);
     }

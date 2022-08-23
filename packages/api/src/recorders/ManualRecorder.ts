@@ -2,7 +2,7 @@ import { Measurement, MeasurementSupplier } from '../Measurement';
 import MeasurementsDatabase from '../MeasurementsDatabase';
 import Supplier from '../patterns/Supplier';
 import Recorder from './Recorder';
-import { getLogger as Log4jsGetLogger } from 'log4js';
+import * as Log4js from 'log4js';
 
 export default class ManualRecorder extends Recorder implements Supplier<Promise<Measurement>> {
 
@@ -10,7 +10,7 @@ export default class ManualRecorder extends Recorder implements Supplier<Promise
 
   public constructor( id:string, measurementSupplier: MeasurementSupplier, database: MeasurementsDatabase ) {
     super(id, measurementSupplier, database);
-    this.appLogger = Log4jsGetLogger('app')
+    this.appLogger = Log4js.getLogger('app');
   }
 
   public recordOneMeasurement(): Promise<Measurement> {
