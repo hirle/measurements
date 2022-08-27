@@ -1,6 +1,4 @@
-import Config, { SensorConfig, MeasurementSupplierConfig, RecorderConfig, LogsConfig } from './Config';
-import DefaultConfig from './default.config.json';
-import * as fs from 'fs';
+import { processArgv, SensorConfig, MeasurementSupplierConfig, RecorderConfig, LogsConfig } from './Config';
 import * as Log4js from 'log4js';
 import * as path from 'path';
 import Web from "./Web";
@@ -137,19 +135,4 @@ function setApiRoutesUp(
   });
 
   Log4js.getLogger().info( `Web paths set up` );
-}
-
-function processArgv(argv: string[]): Config {
-  switch( argv.length ) 
-  {
-    case 2: return DefaultConfig; 
-    case 3: throw new Error('Missing argument: ./path/to/config.json');
-    case 4: if( argv[2] === '--config' ) {
-        return JSON.parse(fs.readFileSync(argv[3], 'utf8'))
-      }  else {
-        throw new Error('Bad argument');
-      } 
-    default:  
-      throw new Error('Bad argument');
-  }
 }

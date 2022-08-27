@@ -1,3 +1,5 @@
+import DefaultConfig from './default.config.json';
+import * as fs from 'fs';
 
 export interface LogsConfig {
     dir: string
@@ -37,3 +39,17 @@ export default interface Config {
   logs?: LogsConfig
 }
 
+export function processArgv( argv: string []): Config {
+  switch( argv.length ) 
+  {
+    case 2: return DefaultConfig; 
+    case 3: throw new Error('Missing argument: ./path/to/config.json');
+    case 4: if( argv[2] === '--config' ) {
+        return JSON.parse(fs.readFileSync(argv[3], 'utf8'))
+      }  else {
+        throw new Error('Bad argument');
+      } 
+    default:  
+      throw new Error('Bad argument');
+  }
+}
