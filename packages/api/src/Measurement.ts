@@ -24,7 +24,7 @@ export class MeasurementSupplier implements Supplier<Promise<Measurement>>, Obje
   public readonly sensor: Sensor;
   public readonly key: string;
 
-  public constructor(id:string, sensor: Sensor, key: string) {
+  private constructor(id:string, sensor: Sensor, key: string) {
     this.id = id;
     this.sensor = sensor;
     this.key = key;
@@ -36,6 +36,10 @@ export class MeasurementSupplier implements Supplier<Promise<Measurement>>, Obje
         const value: SensorValue = sensorValues.values.get(this.key);
         return new Measurement(this, value);
         });
+  }
+
+  public static create( id:string, sensor: Sensor, key: string ){
+    return new MeasurementSupplier(id, sensor, key);
   }
 }
 
