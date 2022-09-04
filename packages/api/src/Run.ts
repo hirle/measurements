@@ -65,7 +65,6 @@ function setupLogger(logConfig?:LogsConfig) {
       app:  { appenders: ["appDateRollingFile"], level: 'INFO' }
     }
   });
-  
 }
 
 function setSensorsUp(sensors: SensorConfig[]): SensorCollection {
@@ -80,7 +79,7 @@ function setMeasurementSuppliersUp( measurementConfigs: MeasurementSupplierConfi
     if( ! sensor.getValuesKeys().has(measurementConfig['sensor-key']) ) {
       throw new Error(`Measurement ${measurementConfig.id} wants unknown sensor-key ${measurementConfig['sensor-key']}`);
     }
-    return new MeasurementSupplier(measurementConfig.id, sensor, measurementConfig['sensor-key']);
+    return MeasurementSupplier.create(measurementConfig.id, sensor, measurementConfig['sensor-key']);
   }));
   Log4js.getLogger().info( `${returned.size()} measurement supplier set up` );
   return returned;
