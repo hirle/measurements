@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Run should run with default  1`] = `
+exports[`Run should run with default and log the creation of sensor, measurement supplier and recorder  1`] = `
 Array [
   Array [
     Object {
@@ -48,7 +48,7 @@ Array [
 ]
 `;
 
-exports[`Run should run with default  2`] = `
+exports[`Run should run with default and log the creation of sensor, measurement supplier and recorder  2`] = `
 Array [
   Array [
     "app",
@@ -63,7 +63,7 @@ Array [
 ]
 `;
 
-exports[`Run should run with default  3`] = `
+exports[`Run should run with default and log the creation of sensor, measurement supplier and recorder  3`] = `
 Array [
   Array [
     "1 sensors set up",
@@ -76,6 +76,40 @@ Array [
   ],
   Array [
     "Web paths set up",
+  ],
+]
+`;
+
+exports[`Run should run with default and log the creation of sensor, measurement supplier and recorder  4`] = `
+Array [
+  Array [
+    "/api/version",
+    [Function],
+  ],
+  Array [
+    "/api/measurement/teracom-demo-temperature/current",
+    [Function],
+  ],
+  Array [
+    "/api/recorder/teracom-demo-temperature-recorder/measurements/latest(?:/:count([0-9]+))?",
+    [Function],
+  ],
+]
+`;
+
+exports[`Run should run with default and log the creation of sensor, measurement supplier and recorder  5`] = `
+Array [
+  Array [
+    "/api/recorder/teracom-demo-temperature-recorder/recordOneMeasurement",
+    [Function],
+  ],
+  Array [
+    "/api/recorder/teracom-demo-temperature-recorder/startRecording",
+    [Function],
+  ],
+  Array [
+    "/api/recorder/teracom-demo-temperature-recorder/stopRecording",
+    [Function],
   ],
 ]
 `;
