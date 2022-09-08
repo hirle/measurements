@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Run should run with default and log the creation of sensor, measurement supplier and recorder  1`] = `
+exports[`Run should log the creation of sensor, measurement supplier and recorder, should log the creation of routes  1`] = `
 Array [
   Array [
     Object {
@@ -48,7 +48,7 @@ Array [
 ]
 `;
 
-exports[`Run should run with default and log the creation of sensor, measurement supplier and recorder  2`] = `
+exports[`Run should log the creation of sensor, measurement supplier and recorder, should log the creation of routes  2`] = `
 Array [
   Array [
     "app",
@@ -63,7 +63,7 @@ Array [
 ]
 `;
 
-exports[`Run should run with default and log the creation of sensor, measurement supplier and recorder  3`] = `
+exports[`Run should log the creation of sensor, measurement supplier and recorder, should log the creation of routes  3`] = `
 Array [
   Array [
     "1 sensors set up",
@@ -80,7 +80,7 @@ Array [
 ]
 `;
 
-exports[`Run should run with default and log the creation of sensor, measurement supplier and recorder  4`] = `
+exports[`Run should log the creation of sensor, measurement supplier and recorder, should log the creation of routes  4`] = `
 Array [
   Array [
     "/api/version",
@@ -97,7 +97,7 @@ Array [
 ]
 `;
 
-exports[`Run should run with default and log the creation of sensor, measurement supplier and recorder  5`] = `
+exports[`Run should log the creation of sensor, measurement supplier and recorder, should log the creation of routes  5`] = `
 Array [
   Array [
     "/api/recorder/teracom-demo-temperature-recorder/recordOneMeasurement",
