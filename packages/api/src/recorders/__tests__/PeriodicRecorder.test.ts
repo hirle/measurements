@@ -53,10 +53,14 @@ describe('PeriodicRecorder', ()=>{
     underTest.start();
   
     expect(underTest.isRecording()).toBeTruthy();
-  
+    expect(mockedGetLoggerInfo).toHaveBeenLastCalledWith('under-test started cycling');
+    expect(mockedGetLoggerTrace).toHaveBeenLastCalledWith('under-test cycles');
+
     underTest.stop();
-  
     expect(underTest.isRecording()).toBeFalsy();
+    expect(mockedGetLoggerInfo).toHaveBeenLastCalledWith('under-test stopped cycling');
+
+  
   });
 });
 

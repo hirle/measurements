@@ -54,7 +54,6 @@ describe('ManualRecorder', ()=>{
         expect(getLogger).toBeCalledTimes(1);
         expect(getLogger).lastCalledWith('app');
         expect(mockedGetLoggerInfo).toBeCalledTimes(1);
-      })
-
+      });
   });
 });
