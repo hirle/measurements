@@ -11,7 +11,8 @@ describe('Web', ()=>{
   const middleWareMock = (_req: IncomingMessage, _res: ServerResponse, next: NextFunction) => {next()};
   const mockLogger = {
     info : jest.fn(),
-    trace: jest.fn()
+    trace: jest.fn(),
+    error: jest.fn()
   }; 
   (Log4js.connectLogger as jest.MockedFunction<typeof Log4js.connectLogger>).mockImplementation( () =>  middleWareMock);
   (Log4js.getLogger as jest.MockedFunction<any>).mockImplementation(() => mockLogger);

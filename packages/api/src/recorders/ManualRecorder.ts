@@ -6,7 +6,7 @@ import * as Log4js from 'log4js';
 
 export default class ManualRecorder extends Recorder implements Supplier<Promise<Measurement>> {
 
-  private appLogger;
+  protected appLogger;
 
   public constructor( id:string, measurementSupplier: MeasurementSupplier, database: MeasurementsDatabase ) {
     super(id, measurementSupplier, database);
@@ -19,7 +19,7 @@ export default class ManualRecorder extends Recorder implements Supplier<Promise
         return this.database.record(measurement)
           .then( () => { 
             this.appLogger.info( `Measurement ${measurement.getSupplier().id} ${measurement.getSupplier().key} recorded`);
-              return Promise.resolve(measurement)
+            return Promise.resolve(measurement)
           });
       });
   }

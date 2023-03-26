@@ -50,9 +50,6 @@ Array [
 
 exports[`Run should log the creation of sensor, measurement supplier and recorder, should log the creation of routes  2`] = `
 Array [
-  Array [
-    "app",
-  ],
   Array [],
   Array [],
   Array [

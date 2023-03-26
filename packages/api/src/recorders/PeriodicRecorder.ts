@@ -1,13 +1,10 @@
-import { MeasurementSupplier } from "../Measurement";
+import { Measurement, MeasurementSupplier } from "../Measurement";
 import MeasurementsDatabase from "../MeasurementsDatabase";
 import {Duration} from 'luxon';
 import { setInterval } from 'timers';
 import ManualRecorder from "./ManualRecorder";
-import * as Log4js from 'log4js';
 
 export default class PeriodicRecorder extends ManualRecorder {
-
-  protected static appLogger = Log4js.getLogger('app');
   
   private cycleId: NodeJS.Timer;
   private period: number;
@@ -27,24 +24,27 @@ export default class PeriodicRecorder extends ManualRecorder {
   public start(){
     this.cycle();
     this.cycleId = setInterval(this.cycle.bind(this), this.period )
-    PeriodicRecorder.appLogger.info(`${this.id} started cycling`);
+    this.appLogger.info(`${this.id} started cycling`); 
   } 
 
   public stop(){
     clearInterval(this.cycleId);
     this.cycleId = null;
-    PeriodicRecorder.appLogger.info(`${this.id} stopped cycling`);
-  } 
-
+    this.appLogger.info(`${this.id} stopped cycling`);
+  }
+  
   public isRecording(): boolean {
     return !!this.cycleId;
   }
 
   private cycle() {
-    PeriodicRecorder.appLogger.trace(`${this.id} cycles`);
-    this.recordOneMeasurement();
+    this.appLogger.trace(`${this.id} cycles`);
+    this.recordOneMeasurement()
+      .then( (_: Measurement) =>{
+        this.appLogger.trace(`${this.id} cycle succeeded`);
+      })
+      .catch( ( err: Error) => {
+        this.appLogger.error(`${this.id} cycle error ${err.name} ${err.message}`);
+      });
   }
-
 }
-
-

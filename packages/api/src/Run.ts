@@ -42,7 +42,8 @@ export function run(argv: string[]): number {
 
 function setupLogger(logConfig?:LogsConfig) {
 
-  const daysRetention = logConfig ? logConfig.retention: 7;
+  const defaultRetentionDays = 7;
+  const daysRetention = logConfig ? logConfig.retention: defaultRetentionDays;
   const dirLogs = logConfig ? logConfig.dir : '.';
 
   const createDateRollingFile = ( filename: string) => ({
