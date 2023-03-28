@@ -25,4 +25,8 @@ export class ObjectWithIdCollection<T extends ObjectWithId> {
   public forEach( callback: ( object :T ) => void ) {
     this.objectsWithID.forEach( (element) => callback(element)  );
   }
+
+  public size(): number {
+    return this.objectsWithID.length;
+  }
 }

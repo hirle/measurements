@@ -6,7 +6,7 @@ describe('MeasurementSupplier', ()=>{
     const sensor = new TestingSensor('testing');
     sensor.pushValue(42);
 
-    const underTest = new MeasurementSupplier('under test', sensor, 'foo' );
+    const underTest = MeasurementSupplier.create('under test', sensor, 'foo' );
 
     const startingTime = Date.now();
 

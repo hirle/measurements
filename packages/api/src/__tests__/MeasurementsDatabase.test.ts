@@ -20,7 +20,7 @@ describe('MeasurementsDatabase', () => {
     testingSensor.pushValue(-10);
     testingSensor.pushValue(10);
 
-    const measurementSupplier = new MeasurementSupplier('one', testingSensor,TestingSensor.onlyKey);
+    const measurementSupplier = MeasurementSupplier.create('one', testingSensor,TestingSensor.onlyKey);
 
     return Promise.all([measurementSupplier.get(),measurementSupplier.get()])
       .then( measurements => {
@@ -48,7 +48,7 @@ describe('MeasurementsDatabase', () => {
 
     const testingSensor = new TestingSensor('no value');
 
-    const measurementSupplier = new MeasurementSupplier('noValueYet', testingSensor, TestingSensor.onlyKey);
+    const measurementSupplier = MeasurementSupplier.create('noValueYet', testingSensor, TestingSensor.onlyKey);
 
     return underTest.getLatestMeasurements(measurementSupplier,2)
       .then( measurements => {

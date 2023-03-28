@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Run should log the creation of sensor, measurement supplier and recorder, should log the creation of routes  1`] = `
+Array [
+  Array [
+    Object {
+      "appenders": Object {
+        "appDateRollingFile": Object {
+          "filename": "logs/app.log",
+          "keepFileExt": true,
+          "numBackups": 7,
+          "pattern": ".yyyy-MM-dd",
+          "type": "dateFile",
+        },
+        "stdout": Object {
+          "type": "stdout",
+        },
+        "webDateRollingFile": Object {
+          "filename": "logs/web.log",
+          "keepFileExt": true,
+          "numBackups": 7,
+          "pattern": ".yyyy-MM-dd",
+          "type": "dateFile",
+        },
+      },
+      "categories": Object {
+        "app": Object {
+          "appenders": Array [
+            "appDateRollingFile",
+          ],
+          "level": "INFO",
+        },
+        "default": Object {
+          "appenders": Array [
+            "stdout",
+          ],
+          "level": "WARN",
+        },
+        "web": Object {
+          "appenders": Array [
+            "webDateRollingFile",
+          ],
+          "level": "INFO",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`Run should log the creation of sensor, measurement supplier and recorder, should log the creation of routes  2`] = `
+Array [
+  Array [],
+  Array [],
+  Array [
+    "app",
+  ],
+  Array [],
+  Array [],
+]
+`;
+
+exports[`Run should log the creation of sensor, measurement supplier and recorder, should log the creation of routes  3`] = `
+Array [
+  Array [
+    "1 sensors set up",
+  ],
+  Array [
+    "1 measurement supplier set up",
+  ],
+  Array [
+    "1 recorders set up",
+  ],
+  Array [
+    "Web paths set up",
+  ],
+]
+`;
+
+exports[`Run should log the creation of sensor, measurement supplier and recorder, should log the creation of routes  4`] = `
+Array [
+  Array [
+    "/api/version",
+    [Function],
+  ],
+  Array [
+    "/api/measurement/teracom-demo-temperature/current",
+    [Function],
+  ],
+  Array [
+    "/api/recorder/teracom-demo-temperature-recorder/measurements/latest(?:/:count([0-9]+))?",
+    [Function],
+  ],
+]
+`;
+
+exports[`Run should log the creation of sensor, measurement supplier and recorder, should log the creation of routes  5`] = `
+Array [
+  Array [
+    "/api/recorder/teracom-demo-temperature-recorder/recordOneMeasurement",
+    [Function],
+  ],
+  Array [
+    "/api/recorder/teracom-demo-temperature-recorder/startRecording",
+    [Function],
+  ],
+  Array [
+    "/api/recorder/teracom-demo-temperature-recorder/stopRecording",
+    [Function],
+  ],
+]
+`;
